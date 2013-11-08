@@ -22,6 +22,7 @@ Data collection and processing
 --------------------------------
 - http://www.crimemapping.com/map.aspx
 - https://www.crimereports.com/
+- selenium
 - ...
 
 Pivotaltracker
