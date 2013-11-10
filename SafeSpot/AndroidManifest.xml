@@ -41,6 +41,10 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name="SpotService"
+            android:process=":myProcess1" />
+        
         <uses-library android:name="com.google.android.maps" />
     </application>
 
