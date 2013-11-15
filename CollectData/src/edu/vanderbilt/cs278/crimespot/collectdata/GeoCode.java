@@ -100,7 +100,7 @@ public class GeoCode {
 		return start + addr + end;
 	}
 
-	public void changeGEO() throws JSONException {
+	public void changeGEO() throws JSONException, InterruptedException {
 		File folder = new File(PATH);
 		File[] files = folder.listFiles();
 		for (File file : files) {
@@ -115,6 +115,7 @@ public class GeoCode {
 				StringBuilder sb = new StringBuilder();
 				String line;
 				while ((line = br.readLine()) != null) {
+					Thread.sleep(1000);
 					String[] strs = line.split(",");
 					String geo = getGeoByAddr(strs[2]);
 					System.out.println("get geo: " + geo);
@@ -131,9 +132,9 @@ public class GeoCode {
 	}
 
 	public static void main(String[] args) throws MalformedURLException,
-			IOException, JSONException {
+			IOException, JSONException, InterruptedException {
 		new GeoCode().changeGEO();
-//		System.out.println(new GeoCode().getGeoByAddr("DR_DB_TODD_JR_BLVD_Nashville_TN"));
+//		System.out.println(new GeoCode().getGeoByAddr("800_BLOCK_2ND_AVE_S_Nashville_TN_USA"));
 	}
 
 }
