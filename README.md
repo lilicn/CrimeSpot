@@ -2,11 +2,11 @@ CrimeSpot
 ========
 Introdunction
 --------------
-An Android app to provide users the safty information in Gmap.
+An Android app to provide users the safety information in Gmap.
 
-1. Users can see both the general and detail safty information of current location.
-2. Users can see the safty information of anywhere by inputing the location.
-3. Users can send warning message to users nearby.
+1. Users can see both the general and detail safety information of current location.
+2. Users can see the safety information of anywhere by inputting the location.
+3. Users can send warning message to users nearby (pubnub)
 
 server
 ------------------------
@@ -20,8 +20,14 @@ Client
 
 Data collection and processing
 --------------------------------
+- http://www.fbi.gov/about-us/cjis/ucr/ucr-publications#Crime
+- http://www.neighborhoodscout.com/tn/nashville/crime/#data
+- http://www.ucrdatatool.gov/
+- http://www.ucrdatatool.gov/Search/Crime/Crime.cfm
 - http://www.crimemapping.com/map.aspx
 - https://www.crimereports.com/
+- http://spotcrime.com/
+- http://www.esri.com/library/whitepapers/pdfs/gis-for-real-time-crime-centers.pdf
 - selenium
 - ...
 
