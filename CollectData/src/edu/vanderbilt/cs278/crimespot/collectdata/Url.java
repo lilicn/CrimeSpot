@@ -65,7 +65,7 @@ public class Url {
 	public static HashMap<String, String> getZoneMap() {
 		HashMap<String, String> zoneHM = new HashMap<String, String>();
 		zoneHM.put(
-				"Nashville_TN",
+				"Nashville_TN_USA",
 				"xmin=-9667325.480312608&ymin=4321245.467651127&xmax=-9654273.857732933&ymax=4325697.924548732");
 //		zoneHM.put(
 //				"SanFrancisco",

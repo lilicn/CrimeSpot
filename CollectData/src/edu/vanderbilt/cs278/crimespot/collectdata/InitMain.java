@@ -8,7 +8,7 @@ public class InitMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		DataStore.getHistoryDataByName("Nashville_TN");
+		DataStore.getHistoryDataByName("Nashville_TN_USA");
 //		DataStore.getHistoryDataByName("SanFrancisco");
 //		DataStore.getHistoryDataByName("Bellevue");
 	}

@@ -48,12 +48,14 @@ public class DataStore {
 	public static void getHistoryDataByName(String name) {
 		List<String> list = Url.getUrlListbyName(name);
 		try {
-			PrintWriter pw = DataStore.getPWByName(name);
+			int i = 1;
 			for (String url : list) {
+				PrintWriter pw = DataStore.getPWByName(name+"_"+(i++));
 				System.out.println(url);
 				getDataByUrl(url, pw, name);
+				pw.close();
 			}
-			pw.close();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,7 +72,7 @@ public class DataStore {
 		String url = Url.getUrlbyName(name);
 		System.out.println(url);
 		try {
-			PrintWriter pw = DataStore.getPWByName(name);
+			PrintWriter pw = DataStore.getPWByName(name+"_7");
 			getDataByUrl(url, pw, name);
 			pw.close();
 		} catch (IOException e) {
@@ -105,12 +107,11 @@ public class DataStore {
 					By.tagName("td"));
 			if (cells.size() > 5) {
 				pw.println(cells.get(1).getText()
-						+ "\t"
+						+ ","
 						+ cells.get(5).getText()
-						+ "\t"
-						+ (cells.get(3).getText().replaceAll(" ", "_")
-								.toString()
-								+ "_" + name));
+						+ ","
+						+ (cells.get(3).getText().replaceAll("&", "AND").toString().replaceAll(" ", "_")).toString()
+								+ "_" + name);
 			} else
 				break;
 		}

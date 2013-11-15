@@ -21,7 +21,7 @@ public class GeoCode {
 	private final static String START = "http://maps.googleapis.com/maps/api/geocode/json?address=";
 	private final static String END = "&sensor=true";
 	private final static String PATH = "data/";
-	private HashMap<String, String> geoHM;
+	private HashMap<String, String> geoHM = new HashMap<String, String>();
 
 	public String getGeoByAddr(String addr) throws MalformedURLException,
 			IOException, JSONException {
@@ -41,12 +41,21 @@ public class GeoCode {
 
 				JSONObject geometry = (JSONObject) result.get("geometry");
 				JSONObject location = (JSONObject) geometry.get("location");
-				String geo = location.getString("lat") + "\t"
+				String geo = location.getString("lat") + ","
 						+ location.getString("lng");
 				geoHM.put(addr, geo);
 				return geo;
 			}
-			
+//			else{
+//				System.out.println(jsonText);
+//				if(jsonText.contains("\"location\" :")){
+//					jsonText = jsonText.split("\"location\" :")[1];
+//					String geo = jsonText.split("\"lat\" : ")[1].split(",")[0];
+//					geo += jsonText.split("\"lng\" : ")[1].split("\r")[0];
+//					return geo;
+//				}
+//				
+//			}			
 			return "not found";
 		} finally {
 			is.close();
@@ -57,8 +66,8 @@ public class GeoCode {
 			IOException, JSONException {
 		double[] dou = new double[2];
 		String s = getGeoByAddr(addr);
-		dou[0] = Double.parseDouble(s.split("\t")[0]);
-		dou[1] = Double.parseDouble(s.split("\t")[1]);
+		dou[0] = Double.parseDouble(s.split(",")[0]);
+		dou[1] = Double.parseDouble(s.split(",")[1]);
 
 		return dou;
 	}
@@ -106,10 +115,10 @@ public class GeoCode {
 				StringBuilder sb = new StringBuilder();
 				String line;
 				while ((line = br.readLine()) != null) {
-					String[] strs = line.split("\t");
+					String[] strs = line.split(",");
 					String geo = getGeoByAddr(strs[2]);
-					System.out.println("get geo " + geo);
-					pw.println(strs[0] + "\t" + strs[1] + "\t" + geo + "\t" +strs[2]);
+					System.out.println("get geo: " + geo);
+					pw.println(strs[0] + "," + strs[1] + "," + geo + "," +strs[2]);
 				}
 				pw.close();
 				br.close();
@@ -124,6 +133,7 @@ public class GeoCode {
 	public static void main(String[] args) throws MalformedURLException,
 			IOException, JSONException {
 		new GeoCode().changeGEO();
+//		System.out.println(new GeoCode().getGeoByAddr("DR_DB_TODD_JR_BLVD_Nashville_TN"));
 	}
 
 }
