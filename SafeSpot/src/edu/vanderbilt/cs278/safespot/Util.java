@@ -16,7 +16,7 @@ public class Util {
 	public final static String LON = "lon";
 	public final static String TYPE = "type";
 	public final static String GEO = "geo";
-	// need to modify to a google app engine url
+	// http://localhost:8888/crimespotserver
 	public final static String URL = "http://localhost:8888/crimespotserver";
 	public final static String ID = "zone id";
 	public final static String SCORE = "safety point";

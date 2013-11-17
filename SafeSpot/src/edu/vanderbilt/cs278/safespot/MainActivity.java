@@ -23,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -37,12 +38,37 @@ public class MainActivity extends Activity {
 	private static final LatLng NASHVILLE = new LatLng(36.1667, -86.7833);
 	private static final String TAG = "MainActivity";
 	private GoogleMap map;
+	private LocationManager locationManager;
+	private boolean isListenGPS = false;
+	private LocationListener locationListener = new LocationListener() {
+		@Override
+		public void onLocationChanged(Location location) {
+			LatLng current = new LatLng(location.getLatitude(),
+					location.getLongitude());
+			Log.d(TAG,"get current geocode");
+			setMap(current);
+		}
+
+		@Override
+		public void onProviderDisabled(String arg0) {
+		}
+
+		@Override
+		public void onProviderEnabled(String arg0) {
+		}
+
+		@Override
+		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		}
+
+	};
 	private static Handler handler;
 
 	private class MyHandler extends Handler {
 		private Context ctx;
 		private GoogleMap map;
 		private final static String TAG = "MyHandler";
+		private Marker marker;
 
 		public MyHandler(Context ctx, GoogleMap map) {
 			this.ctx = ctx;
@@ -57,7 +83,6 @@ public class MainActivity extends Activity {
 				Bundle data = msg.getData();
 				LatLng current = new LatLng(data.getDouble(Util.LAT),
 						data.getDouble(Util.LON));
-				String place = Util.TITLE;
 				String info = data.getString(Util.INFO);
 				// get score from info
 				String score = null;
@@ -69,14 +94,13 @@ public class MainActivity extends Activity {
 				}
 				map.clear();
 				// now only show the total safety score
-				map.addMarker(new MarkerOptions().position(current)
-						.title(place).snippet("safety score:" + score));
+				marker = map.addMarker(new MarkerOptions().position(current)
+						.title(Util.TITLE).snippet("safety score:" + score));
 				break;
 			}
 			default:
 				throw new IllegalArgumentException();
 			}
-
 		}
 	};
 
@@ -87,18 +111,29 @@ public class MainActivity extends Activity {
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 		handler = new MyHandler(MainActivity.this, map);
-		setLocation();
+		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		Log.d(TAG,"onCreate called");
 	}
-
-	/**
-	 * Set location according to the gps data, if no gps set to nashville
-	 */
-	public void setLocation() {
-		if (isGpsAvail()) {
-			getLocation();
+	
+	@Override
+	public void onResume(){
+		super.onResume();	
+		if (isGpsAvail() && !isListenGPS) {
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+					5000, 10, locationListener);
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+					5000, 10, locationListener);
+			isListenGPS  = true;
+			Log.d(TAG,"requestlocationupdates");
 		} else {
 			setMap(NASHVILLE);
-		}
+		}	
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+        removeGPSLis();
 	}
 
 	@Override
@@ -108,34 +143,12 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	/**
-	 * get Location via gps
-	 */
-	public void getLocation() {
-		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		LocationListener locationListener = new LocationListener() {
-			@Override
-			public void onLocationChanged(Location location) {
-				LatLng current = new LatLng(location.getLatitude(),
-						location.getLongitude());
-				setMap(current);
-			}
-
-			@Override
-			public void onProviderDisabled(String arg0) {
-			}
-
-			@Override
-			public void onProviderEnabled(String arg0) {
-			}
-
-			@Override
-			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-			}
-
-		};
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				5000, 10, locationListener);
+	public void removeGPSLis(){
+		if(isListenGPS){
+        	locationManager.removeUpdates(locationListener);
+        	isListenGPS = false;
+        }
+        Log.d(TAG,"removelocationupdates");
 	}
 
 	/**
@@ -155,9 +168,11 @@ public class MainActivity extends Activity {
 	 * 
 	 * @param current
 	 */
-	public void setMap(LatLng current) {
+	public void setMap(LatLng current) {	
 		map.clear();
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+//		removeGPSLis();
+		
 		Log.d(TAG, "start service");
 		Intent intent = new Intent(MainActivity.this, SpotService.class);
 		intent.putExtra(Util.MESSENGER, new Messenger(handler));
