@@ -175,7 +175,7 @@ public class MainActivity extends Activity {
 		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
 		Log.d(TAG,"get geocoder");
 		try {
-			List<Address> addresses = geoCoder.getFromLocationName(editAddr.getText().toString(),0);
+			List<Address> addresses = geoCoder.getFromLocationName(editAddr.getText().toString(),1);
 			if(addresses!=null && addresses.size()>0){
 				Double lat = (double) (addresses.get(0).getLatitude());
 	            Double lon = (double) (addresses.get(0).getLongitude());
