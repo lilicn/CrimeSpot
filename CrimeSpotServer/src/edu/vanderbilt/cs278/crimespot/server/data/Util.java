@@ -1,9 +1,11 @@
 package edu.vanderbilt.cs278.crimespot.server.data;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
+
+import javax.jdo.PersistenceManager;
 
 /**
  * Utility class to provide static variables and methods
@@ -31,7 +33,7 @@ public class Util {
 	 * @return
 	 */
 	public static long getZoneFromGeo(double latitude, double longitude){
-		return 1;
+		return 2;
 	}
 	
 	/**
@@ -40,32 +42,29 @@ public class Util {
 	 * @param zone zone object to store
 	 * @throws IOException
 	 */
-	public static void saveDataFromSrc(String src, Zone zone) throws IOException{
-		URL url = new URL(src);
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				url.openStream()));
-		// remove the first 5 lines
-		for (int i = 0; i < 5; i++)
-			in.readLine();
-		String inputLine;
-		while ((inputLine = in.readLine()) != null){	
-			zone.addCrime(makeCrime(inputLine).getType());
-		}		
-		in.close();
-	}
-	
-	/**
-	 * make crime object from a line of string
-	 * @param line
-	 * @return
-	 */
-	public static Crime makeCrime(String line){
-		String[] items = line.split("\t");
-		return new Crime(items[1],items[2],items[3]);	
-	}
-	
-	public static double getPoint(long num, long total){
-		return num/total;
+	public static void saveDataFromSrc(String src, PersistenceManager pm) throws IOException{
+		File folder = new File(src);
+		File[] files = folder.listFiles();
+		System.out.println("Get data from "+folder.getAbsolutePath());
+		for (File file : files) {
+			BufferedReader br = new BufferedReader(new FileReader(
+					file.getAbsolutePath()));
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] strs = line.split(",");
+				long id = Long.parseLong(strs[0]);
+				double val = Double.parseDouble(strs[1]);
+//				Zone z = Zone.byID(id, pm);
+				Zone z = null;
+				if(z==null){
+					z = new Zone();
+					z.setID(id);
+				}		
+				z.setTotalVal(val);
+				z.saveZone(pm);
+				System.out.println("Zone "+z.getID()+" has created/updated!");
+			}
+		}
 	}
 	
 }

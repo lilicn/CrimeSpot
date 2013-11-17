@@ -18,14 +18,14 @@ import edu.vanderbilt.cs278.crimespot.server.data.Util;
 import edu.vanderbilt.cs278.crimespot.server.data.Zone;
 
 /**
- * Servlet to doget and dopost 
- * Go to http://localhost:8888/crimespotserver
+ * Servlet to doget and dopost Go to http://localhost:8888/crimespotserver
  * 
  * @author Li
- *
+ * 
  */
 public class CrimeSpotServerServlet extends HttpServlet {
 	private PersistenceManager pm;
+	private final static String PATH = "data/";
 
 	@Override
 	public void init() throws ServletException {
@@ -38,20 +38,15 @@ public class CrimeSpotServerServlet extends HttpServlet {
 	}
 
 	/**
-	 * need modified ( now take them as 1 zone)
-	 * initialize data store from crime report stored in s3
+	 * need modified ( now take them as 1 zone) initialize data store from crime
+	 * report stored in s3
+	 * 
 	 * @throws IOException
 	 */
 	public void initData() throws IOException {
 		pm = PMF.get().getPersistenceManager();
-		Zone zone = new Zone();
-		zone.setID(1);
-		Util.saveDataFromSrc(
-				"https://s3.amazonaws.com/mycrimedata/nashville.txt", zone);
-		zone.setPoint(800);
-		pm.makePersistent(zone);
+		Util.saveDataFromSrc(PATH, pm);
 		pm.close();
-		System.out.println("Zone "+zone.getPoint()+" has created!");
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -60,14 +55,15 @@ public class CrimeSpotServerServlet extends HttpServlet {
 		resp.getWriter().println(makeResp(1));
 	}
 
-
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		resp.setContentType("text/plain");
 		resp.getWriter().println(makeResp(getZone(req)));
 	}
 
 	/**
 	 * get zone id according to the parameter of request
+	 * 
 	 * @param req
 	 * @return
 	 */
@@ -77,8 +73,7 @@ public class CrimeSpotServerServlet extends HttpServlet {
 		switch (addType) {
 		case "geo":
 			double latitude = Double.parseDouble(req.getParameter("lat"));
-			double longitude = Double
-					.parseDouble(req.getParameter("lon"));
+			double longitude = Double.parseDouble(req.getParameter("lon"));
 			zone = Util.getZoneFromGeo(latitude, longitude);
 			break;
 		case "add":
@@ -93,6 +88,7 @@ public class CrimeSpotServerServlet extends HttpServlet {
 
 	/**
 	 * make response according to the zone id
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -100,27 +96,23 @@ public class CrimeSpotServerServlet extends HttpServlet {
 		pm = PMF.get().getPersistenceManager();
 		Zone res = pm.getObjectById(Zone.class, id);
 		Zone result = pm.detachCopy(res);
-		HashMap<String, Long> crimeMap = res.getCrimeMap();
 		pm.close();
-		return makeObj(result, crimeMap).toString();
+		return makeObj(result).toString();
 	}
-	
+
 	/**
 	 * make JSONObject to send to client
-	 * @param result detached zone object
-	 * @param crimeMap hashmap to store the number of different kinds of crime
+	 * 
+	 * @param result
+	 *            detached zone object
 	 * @return
 	 */
-	public JSONObject makeObj(Zone result, HashMap<String, Long> crimeMap){
+	public JSONObject makeObj(Zone result) {
 		JSONObject obj = new JSONObject();
-		try {			
+		try {
 			obj.put("zone id", result.getID());
-			obj.put("safety point", result.getPoint());
-			obj.put("total num", result.getNum());
-			Set<String> set = crimeMap.keySet();
-			for(String key:set){
-				obj.put(key, crimeMap.get(key));
-			}
+			obj.put("safety point", result.getTotalVal());
+			obj.put("user review", result.getAveRev());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} finally {

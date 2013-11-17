@@ -1,15 +1,18 @@
 package edu.vanderbilt.cs278.crimespot.server.data;
 
-import java.util.HashMap;
+import java.util.List;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 /**
- * Zone is to save the crime data 
+ * Zone is to save the crime data
+ * 
  * @author Li
- *
+ * 
  */
 @PersistenceCapable(detachable = "true")
 public class Zone {
@@ -17,11 +20,21 @@ public class Zone {
 	@Persistent
 	private long id;
 	@Persistent
-	private double point;
+	private double totalVal;
 	@Persistent
-	private long num;
-	@Persistent 
-	private HashMap<String, Long> crimeMap = new HashMap<String,Long>();
+	private double aveRev = -1;
+	@Persistent
+	private long userRev = 0;
+	@Persistent
+	private long revNum = 0;
+
+	// store the score for different crime type
+	// @Persistent
+	// private HashMap<String, Double> crimes = new HashMap<String, Double>();
+
+	public void saveZone(PersistenceManager pm) {
+		pm.makePersistent(this);
+	}
 
 	public void setID(long id) {
 		this.id = id;
@@ -31,33 +44,37 @@ public class Zone {
 		return this.id;
 	}
 
-	/**
-	 * set the safety point by total number of crime
-	 * @param total total number of crime
-	 */
-	public void setPoint(int total) {
-		this.point = Util.getPoint(num,total);
+	public void setTotalVal(double val) {
+		this.totalVal = val;
 	}
 
-	public double getPoint() {
-		return this.point;
+	public double getTotalVal() {
+		return this.totalVal;
 	}
 
-
-	public long getNum() {
-		return this.num;
-	}
-	
-	public HashMap<String,Long> getCrimeMap(){
-		return this.crimeMap;
+	public void setAveRev() {
+		this.aveRev = revNum > 0 ? userRev / revNum : -1;
 	}
 
-	public void addCrime(String type) {
-		num++;
-		if(crimeMap.containsKey(type)){
-			crimeMap.put(type, crimeMap.get(type)+1);
-		}else{
-			crimeMap.put(type, (long) 1);
-		}
+	public double getAveRev() {
+		return this.aveRev;
+	}
+
+	public void addUserRev(int rev) {
+		this.userRev += rev;
+		this.revNum++;
+		setAveRev();
+	}
+
+	public static Zone byID(long ID, PersistenceManager pm) {
+		List<Zone> results = null;
+		Query query = pm.newQuery("select from " + Zone.class.getName()
+				+ " where id==ID");
+		query.declareParameters("long ID");
+
+		results = (List<Zone>) query.execute(ID);
+		System.out.println(results==null);
+		
+		return (results != null && results.size() == 1) ? results.get(0) : null;
 	}
 }
