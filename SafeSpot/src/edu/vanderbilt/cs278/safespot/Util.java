@@ -1,5 +1,7 @@
 package edu.vanderbilt.cs278.safespot;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Utility class to provide final static variables and methods
  * 
@@ -21,5 +23,15 @@ public class Util {
 	public final static String ID = "zone id";
 	public final static String SCORE = "safety point";
 	public final static String REVIEW = "user review";
+
+	/**
+	 * change geocode to zone number
+	 * 
+	 * @param current
+	 * @return
+	 */
+	public long getZoneFromGEO(LatLng current) {
+		return 1;
+	}
 
 }

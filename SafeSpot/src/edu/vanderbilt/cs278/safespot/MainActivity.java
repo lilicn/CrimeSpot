@@ -1,5 +1,9 @@
 package edu.vanderbilt.cs278.safespot;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,6 +12,8 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,6 +24,9 @@ import android.os.Messenger;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,8 +44,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
-	private static final LatLng NASHVILLE = new LatLng(36.1667, -86.7833);
+	private LatLng LASTGEO = new LatLng(36.1667, -86.7833);
+	private final static String LASTLAT = "LASTLAT";
+	private final static String LASTLON = "LASTLON";
 	private static final String TAG = "MainActivity";
+	private EditText editAddr;
 	private GoogleMap map;
 	private LocationManager locationManager;
 	private boolean isListenGPS = false;
@@ -45,7 +57,7 @@ public class MainActivity extends Activity {
 		public void onLocationChanged(Location location) {
 			LatLng current = new LatLng(location.getLatitude(),
 					location.getLongitude());
-			Log.d(TAG,"get current geocode");
+			Log.d(TAG, "get current geocode");
 			setMap(current);
 		}
 
@@ -108,32 +120,48 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		if (savedInstanceState != null) {
+			this.LASTGEO = new LatLng(savedInstanceState.getDouble(LASTLAT),
+					savedInstanceState.getDouble(LASTLON));
+		}
+
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 		handler = new MyHandler(MainActivity.this, map);
+		editAddr = (EditText) findViewById(R.id.address);
+		
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		Log.d(TAG,"onCreate called");
+		
+		moveMap(LASTGEO);
 	}
-	
+
 	@Override
-	public void onResume(){
-		super.onResume();	
+	protected void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putDouble(LASTLAT, LASTGEO.latitude);
+		savedInstanceState.putDouble(LASTLON, LASTGEO.longitude);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		if (isGpsAvail() && !isListenGPS) {
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-					5000, 10, locationListener);
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-					5000, 10, locationListener);
-			isListenGPS  = true;
-			Log.d(TAG,"requestlocationupdates");
+			locationManager.requestLocationUpdates(
+					LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+			locationManager.requestLocationUpdates(
+					LocationManager.NETWORK_PROVIDER, 5000, 10,
+					locationListener);
+			isListenGPS = true;
+			Log.d(TAG, "requestlocationupdates");
 		} else {
-			setMap(NASHVILLE);
-		}	
+			setMap(LASTGEO);
+		}
 	}
-	
+
 	@Override
-	public void onPause(){
+	public void onPause() {
 		super.onPause();
-        removeGPSLis();
+		removeGPSLis();
 	}
 
 	@Override
@@ -143,12 +171,32 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	public void removeGPSLis(){
-		if(isListenGPS){
-        	locationManager.removeUpdates(locationListener);
-        	isListenGPS = false;
-        }
-        Log.d(TAG,"removelocationupdates");
+	public void runSearch(View v) {
+		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+		Log.d(TAG,"get geocoder");
+		try {
+			List<Address> addresses = geoCoder.getFromLocationName(editAddr.getText().toString(),0);
+			if(addresses!=null && addresses.size()>0){
+				Double lat = (double) (addresses.get(0).getLatitude());
+	            Double lon = (double) (addresses.get(0).getLongitude());
+	            setMap(new LatLng(lat,lon));
+			}else{
+				Log.e(TAG,"cannot get geocode from input address");
+				Toast.makeText(this, "cannot get geocode from input address", Toast.LENGTH_LONG)
+				.show();
+			}
+			
+		} catch (IOException e) {
+			Log.e(TAG,e.toString()+": "+e.getMessage());
+		}
+	}
+
+	public void removeGPSLis() {
+		if (isListenGPS) {
+			locationManager.removeUpdates(locationListener);
+			isListenGPS = false;
+		}
+		Log.d(TAG, "removelocationupdates");
 	}
 
 	/**
@@ -168,11 +216,10 @@ public class MainActivity extends Activity {
 	 * 
 	 * @param current
 	 */
-	public void setMap(LatLng current) {	
-		map.clear();
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
-//		removeGPSLis();
-		
+	public void setMap(LatLng current) {
+		LASTGEO = current;
+		moveMap(LASTGEO);
+		// removeGPSLis();		
 		Log.d(TAG, "start service");
 		Intent intent = new Intent(MainActivity.this, SpotService.class);
 		intent.putExtra(Util.MESSENGER, new Messenger(handler));
@@ -180,4 +227,9 @@ public class MainActivity extends Activity {
 		startService(intent);
 	}
 
+	
+	public void moveMap(LatLng current){
+		map.clear();
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+	}
 }
