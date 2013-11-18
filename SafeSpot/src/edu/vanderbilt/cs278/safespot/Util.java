@@ -10,6 +10,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class Util {
 	public final static int RESPONSE = 2;
+	public final static int RESPONSE_CRIME = 5;
+	public final static String CRIMENEARBY = "CRIME_NEARBY";
 	public final static String MESSENGER = "MESSENGER";
 	public final static String LATLNG = "LatLng";
 	public final static String INFO = "info";
@@ -30,8 +32,12 @@ public class Util {
 	 * @param current
 	 * @return
 	 */
-	public long getZoneFromGEO(LatLng current) {
+	public static long getZoneFromGEO(LatLng current) {
 		return 1;
+	}
+	
+	public static String getChannelByZone(long zone){
+		return "edu_vanderbilt_cs278_lili_pubnub_channel_2013_"+zone;
 	}
 
 }

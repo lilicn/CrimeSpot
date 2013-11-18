@@ -42,7 +42,6 @@ public class SpotService extends IntentService {
 
         @Override
         protected void onHandleIntent(Intent intent) {
-                Log.d(TAG, "handler start");
                 LatLng latlng = (LatLng) intent.getExtras().get(Util.LATLNG);
                 Log.d(TAG, latlng.latitude + "," + latlng.longitude);
                 Messenger messenger = (Messenger) intent.getExtras()

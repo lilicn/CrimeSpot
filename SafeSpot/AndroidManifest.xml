@@ -42,10 +42,15 @@
         </activity>
 
         <service
-            android:name="SpotService"
+            android:name="edu.vanderbilt.cs278.safespot.SpotService"
             android:process=":myProcess1" />
-        
+        <service
+            android:name="edu.vanderbilt.cs278.safespot.CrimeService"
+            android:process=":myProcess2" />
+
         <uses-library android:name="com.google.android.maps" />
+
+       
     </application>
 
 </manifest>
