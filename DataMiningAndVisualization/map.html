@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+// This example creates a 2-pixel-wide red polyline showing
+// the path of William Kingsford Smith's first trans-Pacific flight between
+// Oakland, CA, and Brisbane, Australia.
+
+function initialize() {
+  var mapOptions = {
+    zoom: 11,
+    scaleControl: true,
+    center: new google.maps.LatLng(36.17, -86.8),
+    mapTypeId: google.maps.MapTypeId.ROADMAP 
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+var maxlat = 36.19;
+var minlat = 36.138;
+var maxlng = -86.72;
+var minlng = -86.85;
+
+var latstep = 0.004;  var lngstep = 0.005;
+var m = (maxlat-minlat)/latstep;
+var n = (maxlng-minlng)/lngstep;
+
+for (var lat = minlat; lat<= maxlat; lat = lat + latstep)
+{
+  var Coordinates = [
+    new google.maps.LatLng(lat, minlng),
+    new google.maps.LatLng(lat, maxlng),
+  ];
+  var line = new google.maps.Polyline({
+    path: Coordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  line.setMap(map);
+}
+
+for (var lng = minlng; lng<= maxlng; lng = lng + lngstep)
+{
+  var Coordinates = [
+    new google.maps.LatLng(minlat, lng),
+    new google.maps.LatLng(maxlat, lng),
+  ];
+  var line = new google.maps.Polyline({
+    path: Coordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  line.setMap(map);
+}
+
+
+
+  var flightPlanCoordinates = [
+    new google.maps.LatLng(minlat, minlng),
+    new google.maps.LatLng(minlat, maxlng),
+    new google.maps.LatLng(maxlat, maxlng),
+    new google.maps.LatLng(maxlat, minlng),
+    new google.maps.LatLng(minlat, minlng),   
+  ];
+  var flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  flightPath.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
