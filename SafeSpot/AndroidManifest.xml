@@ -16,7 +16,7 @@
         android:required="true" />
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
     <application
@@ -42,10 +42,15 @@
         </activity>
 
         <service
-            android:name="SpotService"
+            android:name="edu.vanderbilt.cs278.safespot.SpotService"
             android:process=":myProcess1" />
-        
+
         <uses-library android:name="com.google.android.maps" />
+
+        <activity
+            android:name="edu.vanderbilt.cs278.safespot.SpotReview"
+            android:label="@string/title_activity_spot_review" >
+        </activity>
     </application>
 
 </manifest>
