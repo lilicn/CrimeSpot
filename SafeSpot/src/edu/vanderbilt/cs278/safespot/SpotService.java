@@ -52,6 +52,7 @@ public class SpotService extends IntentService {
 	
 			HttpPost post = new HttpPost(Util.URL);
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE, Util.Request_Type.GET_REVIEW.toString()));
 			nameValuePairs.add(new BasicNameValuePair(Util.TYPE, Util.GEO));
 			nameValuePairs.add(new BasicNameValuePair(Util.LAT, latlng.latitude
 					+ ""));
@@ -93,6 +94,7 @@ public class SpotService extends IntentService {
 			
 			HttpPost post = new HttpPost(Util.URL);
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE, Util.Request_Type.SEND_REVIEW.toString()));
 			nameValuePairs.add(new BasicNameValuePair(Util.TYPE, Util.GEO));
 			nameValuePairs.add(new BasicNameValuePair(Util.LAT, latlng.latitude
 					+ ""));

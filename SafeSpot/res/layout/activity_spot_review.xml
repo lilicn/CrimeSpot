@@ -19,7 +19,7 @@
         <fragment
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             class="com.google.android.gms.maps.MapFragment" />
     </LinearLayout>
 
@@ -35,18 +35,16 @@
             android:id="@+id/layout_ratingBar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Safe Facility: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
             <RatingBar
                 android:id="@+id/ratingBar1"
                 style="?android:attr/ratingBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Safe Facility: "
+                android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,15 +52,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_ratingBar1" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Light availability: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
             <RatingBar
                 android:id="@+id/ratingBar2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Light: "
+                android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
 
         <LinearLayout
@@ -70,37 +68,63 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_ratingBar2" >
+            <RatingBar
+                android:id="@+id/ratingBar3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="People Around: "
                 android:textAppearance="?android:attr/textAppearanceLarge" />
-            <RatingBar
-                android:id="@+id/ratingBar3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_write_reviews"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layout_ratingBar3" >
+
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <requestFocus />
+            </EditText>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/layout_ratingBar3" >
+            android:layout_below="@+id/layout_write_reviews" >
 
             <Button
                 android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button"
-                android:onClick="onSubmitClick" />
+                android:layout_height="match_parent"
+                android:onClick="onSubmitClick"
+                android:text="Submit" />
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/spinner_crime_type"
                 android:layout_width="108dp"
                 android:layout_height="wrap_content"
-                android:gravity="right" />
+                android:layout_marginLeft="100dp" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.08"
+                android:onClick="onShowDataBtnClick"
+                android:text="Button" />
+
         </LinearLayout>
+
     </RelativeLayout>
 
     <ListView

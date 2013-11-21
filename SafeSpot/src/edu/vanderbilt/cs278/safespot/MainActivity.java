@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
 				.getMap();
 		handler = new MyHandler(MainActivity.this, map);
 		
-		map.setInfoWindowAdapter(new InfoWindowAdapter(){
+/*		map.setInfoWindowAdapter(new InfoWindowAdapter(){
 
 			@Override
 			public View getInfoContents(Marker arg0) {
@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
 					}});			
 				return window;
 			}
-		});
+		});*/
 		
 		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
 

@@ -6,4 +6,25 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_spot_review">SpotReview</string>
 
+    <string-array name="crime_type_array">
+        <item>All</item>
+        <item>Arson</item>
+        <item>Assult</item>
+        <item>Burglary</item>
+        <item>Disturbing the peace</item>
+        <item>Drug/Ahcohol</item>
+        <item>DUI</item>
+        <item>Fraud</item>
+        <item>Homicide</item>
+        <item>Vehicle Theft</item>
+        <item>Robbery</item>
+        <item>Sex Crimes</item>
+        <item>Laceny</item>
+        <item>Vandalism</item>
+        <item>Weapons</item>
+        <item>Break-in</item>
+    </string-array>
+
+    <string name="title_activity_area_data">AreaDataActivity</string>
+
 </resources>

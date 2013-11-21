@@ -30,12 +30,9 @@ public class ArrayAdapterItem extends ArrayAdapter<LocationReview> {
     	    contentView = inflater.inflate(layoutResourceId, parent, false);
 
     	    ImageView imageView = (ImageView) contentView.findViewById(R.id.imageView1);
-    	    TextView text_lat = (TextView) contentView.findViewById(R.id.txt_lat);
-    	    TextView text_lon = (TextView) contentView.findViewById(R.id.txt_lon);
+
     	    TextView text_score = (TextView) contentView.findViewById(R.id.list_score);
     	    
-    	    text_lat.setText("Latitude: "+data[position].lat.toString());
-    	    text_lon.setText("Longitude: "+data[position].lon.toString());
     	    text_score.setText(data[position].score.toString());
 
     	    return contentView;

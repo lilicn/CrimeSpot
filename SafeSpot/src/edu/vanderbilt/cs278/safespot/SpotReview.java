@@ -77,8 +77,27 @@ public class SpotReview extends Activity {
 		ratingBar_light = (RatingBar)findViewById(R.id.ratingBar2);
 		ratingBar_people = (RatingBar)findViewById(R.id.ratingBar3);
 		btn_sumbit = (Button)findViewById(R.id.btn_submit);
-		crime_type = (Spinner)findViewById(R.id.spinner1);
+		crime_type = (Spinner)findViewById(R.id.spinner_crime_type);
 		list = (ListView)findViewById(R.id.ListView1);
+		
+/*		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		        R.array.crime_type_array, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		crime_type.setAdapter(adapter);
+		crime_type.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}});*/
 		
 		Bundle bundle = getIntent().getExtras();
 		locationsreivews = getListData();
@@ -131,5 +150,10 @@ public class SpotReview extends Activity {
 		startService(intent);
 		
 		
+	}
+	
+	public void onShowDataBtnClick(View v){
+		 Intent intent = new Intent(this,AreaDataActivity.class);
+		 startActivity(intent);	
 	}
 }
