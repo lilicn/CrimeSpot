@@ -19,5 +19,7 @@
     <string name="comment">Your comment</string>
     <string name="web">webView</string>
     <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="showNearby">Nearby Crime</string>
+    <string name="backToCur">Back</string>
 
 </resources>

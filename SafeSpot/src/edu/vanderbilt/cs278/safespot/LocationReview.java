@@ -13,8 +13,8 @@ public class LocationReview implements Serializable {
 	public LocationReview() {
 		super();
 		name = "hello";
-		lon = 0.0;
-		lat = 0.0;
+		lon = -86.80215537;
+		lat = 36.14513101;
 		score = 2.0;
 		review = 0;
 		comment = "comment";

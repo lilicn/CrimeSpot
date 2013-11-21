@@ -51,7 +51,7 @@ public class WebViewActivity extends Activity {
 			showHeapMapWithWeight();
 			return true;
 			
-		case R.id.map:
+		case R.id.Map:
 			showMap();
 			return true;
 		default:

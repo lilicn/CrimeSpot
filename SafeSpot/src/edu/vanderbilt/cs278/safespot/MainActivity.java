@@ -64,9 +64,9 @@ public class MainActivity extends LogActivity {
 	private final String TAG = getClass().getSimpleName();
 	private EditText editAddr;
 	private GoogleMap map;
-	
+
 	/**
-	 *	fetch location
+	 * fetch location
 	 */
 	private LocationManager locationManager;
 	private boolean isListenGPS = false;
@@ -143,9 +143,10 @@ public class MainActivity extends LogActivity {
 				}
 				map.clear();
 				// now only show the total safety score
-				DecimalFormat df=new DecimalFormat("#.#");
+				DecimalFormat df = new DecimalFormat("#.#");
 				marker = map.addMarker(new MarkerOptions().position(current)
-						.title("Safety score:" + df.format(score)).snippet("Review score:" + df.format(review)));
+						.title("Safety score:" + df.format(score))
+						.snippet("Review score:" + df.format(review)));
 				// set current display location
 				curDisplayLoc.setLat(current.latitude);
 				curDisplayLoc.setLon(current.longitude);
@@ -218,7 +219,8 @@ public class MainActivity extends LogActivity {
 			Log.d(TAG, "onCreate CURRENTGRO: " + CURRENTGRO.latitude + ","
 					+ CURRENTGRO.longitude);
 		}
-		moveMap(CURRENTGRO);
+		// moveMap(CURRENTGRO);
+		reFreshMap();
 		setWindowAdp();
 	}
 
@@ -249,6 +251,11 @@ public class MainActivity extends LogActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
+		if (isSub)
+			runSubscribe();
+	}
+
+	public void reFreshMap() {
 		if (isGpsAvail() && !isListenGPS) {
 			locationManager.requestLocationUpdates(
 					LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -257,10 +264,9 @@ public class MainActivity extends LogActivity {
 					locationListener);
 			isListenGPS = true;
 		} else {
-			setMap(CURRENTGRO);
+			// setMap(CURRENTGRO);
+			setMap(new LatLng(curDisplayLoc.getLat(), curDisplayLoc.getLon()));
 		}
-		if (isSub)
-			runSubscribe();
 	}
 
 	@Override
@@ -334,9 +340,6 @@ public class MainActivity extends LogActivity {
 		moveMap(current);
 		// start spotservice
 		startServiceByClass(SpotService.class, current);
-		// start crimeservice
-		// show recent crime nearby
-		startServiceByClass(CrimeService.class, current);
 		Log.d(TAG, "start two services");
 		// removeGPSLis();
 		removeGPSLis();
@@ -344,6 +347,7 @@ public class MainActivity extends LogActivity {
 
 	/**
 	 * start service by class
+	 * 
 	 * @param c
 	 * @param current
 	 */
@@ -362,7 +366,7 @@ public class MainActivity extends LogActivity {
 	 */
 	public void moveMap(LatLng current) {
 		map.clear();
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 14));
 	}
 
 	/**
@@ -372,6 +376,18 @@ public class MainActivity extends LogActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
+		case R.id.showNearby:
+			showNearby();
+			return true;
+		case R.id.webOption:
+			showWebView();
+			return true;
+		case R.id.backToCur:
+			back();
+			return true;
+		case R.id.pubOption:
+			showDialog();
+			return true;
 		case R.id.subOption:
 			runSubscribe();
 			isSub = true;
@@ -380,12 +396,7 @@ public class MainActivity extends LogActivity {
 			runUnSubscribe();
 			isSub = false;
 			return true;
-		case R.id.pubOption:
-			showDialog();
-			return true;
-		case R.id.webOption:
-			showWebView();
-			return true;
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -458,13 +469,24 @@ public class MainActivity extends LogActivity {
 	}
 
 	/**
-	 * show web view 
+	 * show web view
 	 */
-	public void showWebView(){
-		Intent intent = new Intent(MainActivity.this,
-				WebViewActivity.class);
+	public void showWebView() {
+		Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
 		startActivity(intent);
 	}
+
+	public void showNearby() {
+		// start crimeservice
+		// show recent crime nearby
+		startServiceByClass(CrimeService.class,
+				new LatLng(curDisplayLoc.getLat(), curDisplayLoc.getLon()));
+	}
+
+	public void back() {
+		setMap(CURRENTGRO);
+	}
+
 	/**
 	 * publish the message via pubnub.
 	 * 
