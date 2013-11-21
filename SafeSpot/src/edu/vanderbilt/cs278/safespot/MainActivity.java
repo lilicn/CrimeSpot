@@ -15,6 +15,7 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -25,6 +26,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,10 +35,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -54,6 +61,7 @@ import com.pubnub.api.PubnubError;
  */
 @SuppressLint("NewApi")
 public class MainActivity extends LogActivity {
+	private Context mainCtx;
 	private long subZone = 1;
 	private final static String SUBZONE = "SUBZONE";
 	// pubnub object with attributes PUBLISH_KEY(optional),
@@ -78,14 +86,12 @@ public class MainActivity extends LogActivity {
 					+ location.getLongitude());
 			long temp = Util.getZoneFromGEO(CURRENTGRO);
 			if (temp != subZone) {
-				if (isSub)
+				if (isSub) {
 					runUnSubscribe();
-
-				subZone = temp;
-
-				if (isSub)
+					subZone = temp;
 					runSubscribe();
-
+				}
+				subZone = temp;
 			}
 
 			Log.d(TAG, "get current geocode");
@@ -105,7 +111,9 @@ public class MainActivity extends LogActivity {
 		}
 
 	};
+
 	private static Handler handler;
+	private LocationReview curDisplayLoc = new LocationReview();
 
 	private class MyHandler extends Handler {
 		private Context ctx;
@@ -130,12 +138,17 @@ public class MainActivity extends LogActivity {
 				String info = data.getString(Util.INFO);
 				// get score from info
 				String score = null;
+				String review = null;
 				try {
 					JSONObject obj = new JSONObject(info);
 					score = obj.getString(Util.SCORE);
+					review = obj.getString(Util.REVIEW);
 				} catch (JSONException e) {
 					Log.e(TAG, e.toString() + ":" + e.getMessage());
 				}
+				curDisplayLoc.lat = current.latitude;
+				curDisplayLoc.lon = current.longitude;
+				curDisplayLoc.score = score;
 				map.clear();
 				// now only show the total safety score
 				marker = map.addMarker(new MarkerOptions().position(current)
@@ -162,6 +175,8 @@ public class MainActivity extends LogActivity {
 			}
 		}
 
+		InfoWindowAdapter m_InfoWindowAdapter = null;
+
 		/**
 		 * add marker for nearby crimes happened recently
 		 * 
@@ -178,7 +193,7 @@ public class MainActivity extends LogActivity {
 						.title(type)
 						.snippet(date)
 						.icon(BitmapDescriptorFactory
-								.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+								.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
 						.alpha(0.6f)));
 				Log.d(TAG, "add crime marker");
 			} catch (JSONException e) {
@@ -208,6 +223,21 @@ public class MainActivity extends LogActivity {
 					+ CURRENTGRO.longitude);
 			moveMap(CURRENTGRO);
 		}
+
+		setWindowAdp();
+	}
+
+	public void setWindowAdp() {
+		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+
+			@Override
+			public void onInfoWindowClick(Marker arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MainActivity.this, SpotReviewActivity.class);
+				intent.putExtra("locationReview", curDisplayLoc);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -218,8 +248,8 @@ public class MainActivity extends LogActivity {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void onStart() {
+		super.onStart();
 		if (isGpsAvail() && !isListenGPS) {
 			locationManager.requestLocationUpdates(
 					LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -232,11 +262,12 @@ public class MainActivity extends LogActivity {
 		}
 		if (isSub)
 			runSubscribe();
+		setWindowAdp();
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
+	public void onStop() {
+		super.onStop();
 		removeGPSLis();
 	}
 
@@ -382,15 +413,16 @@ public class MainActivity extends LogActivity {
 		dialog.setContentView(R.layout.dialog_warn);
 		dialog.setTitle("Send Warn");
 		final EditText warning = (EditText) dialog.findViewById(R.id.warning);
-		
+
 		Button send = (Button) dialog.findViewById(R.id.sendButton);
 		send.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v){
-				publish(warning.getText().toString()+"@"+CURRENTGRO.latitude+","+CURRENTGRO.longitude);
+			public void onClick(View v) {
+				publish(warning.getText().toString() + "@"
+						+ CURRENTGRO.latitude + "," + CURRENTGRO.longitude);
 			}
 		});
-		
+
 		Button cancel = (Button) dialog.findViewById(R.id.cancelButton);
 		// if button is clicked, close the custom dialog
 		cancel.setOnClickListener(new OnClickListener() {

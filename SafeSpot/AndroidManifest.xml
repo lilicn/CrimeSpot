@@ -50,6 +50,10 @@
 
         <uses-library android:name="com.google.android.maps" />
 
+        <activity
+            android:name="edu.vanderbilt.cs278.safespot.SpotReviewActivity"
+            android:label="@string/title_activity_spot_review" >
+        </activity>
        
     </application>
 

@@ -21,10 +21,14 @@ public class Util {
 	public final static String TYPE = "type";
 	public final static String GEO = "geo";
 	// http://localhost:8888/crimespotserver
-	public final static String URL = "http://localhost:8888/crimespotserver";
+	public final static String URL = "http://1.tidal-analogy-395.appspot.com/crimespotserver";
 	public final static String ID = "zone id";
 	public final static String SCORE = "safety point";
 	public final static String REVIEW = "user review";
+	public final static String REQUEST_TYPE = "request type";
+	public enum Request_Type {
+		GET_REVIEW, SEND_REVIEW, GET_LIST
+	}
 
 	/**
 	 * change geocode to zone number

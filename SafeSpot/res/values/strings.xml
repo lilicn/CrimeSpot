@@ -14,5 +14,6 @@
     <string name="cancel">Cancel</string>
     <string name="title_activity_pub">PubActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_spot_review">SpotReview</string>
 
 </resources>
