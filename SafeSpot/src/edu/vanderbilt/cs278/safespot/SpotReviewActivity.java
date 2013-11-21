@@ -46,10 +46,12 @@ public class SpotReviewActivity extends Activity {
 		private Context ctx;
 		private final static String TAG = "MyHandler";
 		private long zone;
+		private List<LocationReview> reviewLists;
 
-		public MyHandler(Context ctx, long zone) {
+		public MyHandler(Context ctx, long zone,  List<LocationReview> reviewLists ) {
 			this.ctx = ctx;
 			this.zone = zone;
+			this.reviewLists = reviewLists;
 		}
 
 		@Override
@@ -63,9 +65,14 @@ public class SpotReviewActivity extends Activity {
 				case Util.GET_LIST: {
 					long temp = json.getLong(Util.ZONE);
 					if(temp==zone){
-						for(int i = 10; i>=0; i--){
-							
+						// from newest to oldest
+						for(int i = 1; i<=10; i++){
+							String com = null;
+							if(!(com=json.getString(i+"")).equals("")){
+								reviewLists.add(new LocationReview(com));
+							}						
 						}
+						showList();
 					}
 					break;
 				}
@@ -100,12 +107,11 @@ public class SpotReviewActivity extends Activity {
 		text = (EditText) findViewById(R.id.ratingBar2);
 
 		Bundle bundle = getIntent().getExtras();
-		reviewLists = getListData();
-		showList();
-
+		
 		currentLoc = (LocationReview) bundle.getSerializable("locationReview");
 		initializeMap();
-		handler = new MyHandler(SpotReviewActivity.this,Util.getZoneFromGEO(new LatLng(currentLoc.getLat(),currentLoc.getLon())));
+		handler = new MyHandler(SpotReviewActivity.this,Util.getZoneFromGEO(new LatLng(currentLoc.getLat(),currentLoc.getLon())),reviewLists);
+		getListData();
 	}
 
 	@Override
@@ -116,12 +122,10 @@ public class SpotReviewActivity extends Activity {
 		return true;
 	}
 
-	private List<LocationReview> getListData() {
+	private void getListData() {
 		List<LocationReview> reviews = new ArrayList<LocationReview>();
-		for (int i = 0; i < 5; i++) {
-			reviews.add(new LocationReview());
-		}
-		return reviews;
+		Intent intent = makeIntentByType(Util.GET_LIST);
+		startService(intent);		
 	}
 
 	private void initializeMap() {

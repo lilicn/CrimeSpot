@@ -18,6 +18,11 @@ public class LocationReview implements Serializable {
 		review = 0;
 		comment = "comment";
 	}
+	
+	public LocationReview(String com){
+		this();
+		comment = com;
+	}
 	private String name;
 	private double lon;
 	private double lat;
