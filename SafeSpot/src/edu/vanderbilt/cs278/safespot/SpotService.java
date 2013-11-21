@@ -93,6 +93,7 @@ public class SpotService extends IntentService {
 			msg.what = type;
 			Bundle bundle = new Bundle();
 			bundle.putString(Util.INFO, responseText);
+			
 			if(type==Util.GET_REVIEW){
 				bundle.putDouble(Util.LAT, latlng.latitude);
 				bundle.putDouble(Util.LON, latlng.longitude);

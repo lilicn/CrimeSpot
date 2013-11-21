@@ -146,7 +146,7 @@ public class SpotReviewActivity extends Activity {
 		if (comment != null) {
 			LocationReview temp = new LocationReview();
 			temp.setComment(comment);
-			reviewLists.add(temp);
+			reviewLists.add(0,temp);
 			showList();		
 			Intent intent = makeIntentByType(Util.SEND_REVIEW);
 			intent.putExtra(Util.REVIEW, comment);

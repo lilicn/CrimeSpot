@@ -131,7 +131,7 @@ public class MainActivity extends LogActivity {
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "get msg " + msg.what);
 			switch (msg.what) {
-			case Util.RESPONSE: {
+			case Util.GET_REVIEW: {
 				Bundle data = msg.getData();
 				LatLng current = new LatLng(data.getDouble(Util.LAT),
 						data.getDouble(Util.LON));

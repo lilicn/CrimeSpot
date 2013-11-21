@@ -28,7 +28,6 @@ public class ArrayAdapterItem extends ArrayAdapter<LocationReview> {
 	@Override
 	public View getView(int position, View contentView, ViewGroup parent) {
 		LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-
 		contentView = inflater.inflate(layoutResourceId, parent, false);
 		ImageView imageView = (ImageView) contentView
 				.findViewById(R.id.imageView1);
