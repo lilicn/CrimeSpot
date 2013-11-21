@@ -7,6 +7,12 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+/**
+ * class to store comments
+ * 
+ * @author Li
+ * 
+ */
 @PersistenceCapable(detachable = "true")
 public class Comment {
 	@PrimaryKey
@@ -18,20 +24,20 @@ public class Comment {
 	public void saveComment(PersistenceManager pm) {
 		pm.makePersistent(this);
 	}
-	
-	public void addComment(String comment){
+
+	public void addComment(String comment) {
 		list.add(comment);
 	}
-	
-	public ArrayList<String> getList(){
+
+	public ArrayList<String> getList() {
 		return list;
 	}
-	
-	public void setID(long id){
+
+	public void setID(long id) {
 		this.id = id;
 	}
-	
-	public long getID(){
+
+	public long getID() {
 		return this.id;
 	}
 }

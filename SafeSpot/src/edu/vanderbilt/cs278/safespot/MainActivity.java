@@ -1,6 +1,7 @@
 package edu.vanderbilt.cs278.safespot;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -13,9 +14,7 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,8 +25,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.provider.Settings;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,13 +32,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -61,20 +55,19 @@ import com.pubnub.api.PubnubError;
  */
 @SuppressLint("NewApi")
 public class MainActivity extends LogActivity {
-	private Context mainCtx;
 	private long subZone = 1;
-	private final static String SUBZONE = "SUBZONE";
-	// pubnub object with attributes PUBLISH_KEY(optional),
-	// SUBSCRIBE_KEY(Required), SECRET_KEY(optional), CIPHER_KEY(optional),
-	// SSL_ON?
 	private Pubnub pubnub = new Pubnub("demo", "demo", "", false);
 	private boolean isSub = false;
-	private LatLng CURRENTGRO = new LatLng(36.14513101,-86.80215537);
+	private LatLng CURRENTGRO = new LatLng(36.14513101, -86.80215537);
 	private final static String LASTLAT = "LASTLAT";
 	private final static String LASTLON = "LASTLON";
 	private final String TAG = getClass().getSimpleName();
 	private EditText editAddr;
 	private GoogleMap map;
+	
+	/**
+	 *	fetch location
+	 */
 	private LocationManager locationManager;
 	private boolean isListenGPS = false;
 	private LocationListener locationListener = new LocationListener() {
@@ -112,18 +105,19 @@ public class MainActivity extends LogActivity {
 
 	};
 
+	/**
+	 * UI handeler
+	 */
 	private static Handler handler;
 	private LocationReview curDisplayLoc = new LocationReview();
 
 	private class MyHandler extends Handler {
-		private Context ctx;
 		private GoogleMap map;
 		private final static String TAG = "MyHandler";
 		private Marker marker;
 		private List<Marker> list;
 
-		public MyHandler(Context ctx, GoogleMap map) {
-			this.ctx = ctx;
+		public MyHandler(GoogleMap map) {
 			this.map = map;
 		}
 
@@ -143,14 +137,15 @@ public class MainActivity extends LogActivity {
 					JSONObject obj = new JSONObject(info);
 					score = obj.getDouble(Util.SCORE);
 					review = obj.getDouble(Util.REVIEW);
-					review = review==-1?0:review;
+					review = review == -1 ? 0 : review;
 				} catch (JSONException e) {
 					Log.e(TAG, e.toString() + ":" + e.getMessage());
-				}			
+				}
 				map.clear();
 				// now only show the total safety score
+				DecimalFormat df=new DecimalFormat("#.#");
 				marker = map.addMarker(new MarkerOptions().position(current)
-						.title(Util.TITLE).snippet("Safety score:" + score));
+						.title("Safety score:" + df.format(score)).snippet("Review score:" + df.format(review)));
 				// set current display location
 				curDisplayLoc.setLat(current.latitude);
 				curDisplayLoc.setLon(current.longitude);
@@ -211,7 +206,7 @@ public class MainActivity extends LogActivity {
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
-		handler = new MyHandler(MainActivity.this, map);
+		handler = new MyHandler(map);
 		editAddr = (EditText) findViewById(R.id.address);
 
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -221,7 +216,7 @@ public class MainActivity extends LogActivity {
 					savedInstanceState.getDouble(LASTLON));
 			subZone = Util.getZoneFromGEO(CURRENTGRO);
 			Log.d(TAG, "onCreate CURRENTGRO: " + CURRENTGRO.latitude + ","
-					+ CURRENTGRO.longitude);			
+					+ CURRENTGRO.longitude);
 		}
 		moveMap(CURRENTGRO);
 		setWindowAdp();
@@ -281,6 +276,11 @@ public class MainActivity extends LogActivity {
 		return true;
 	}
 
+	/**
+	 * it is called when go button is clicked to search address in map
+	 * 
+	 * @param v
+	 */
 	public void runSearch(View v) {
 		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
 		Log.d(TAG, "get geocoder");
@@ -302,6 +302,9 @@ public class MainActivity extends LogActivity {
 		}
 	}
 
+	/**
+	 * remove gps listerner
+	 */
 	public void removeGPSLis() {
 		if (isListenGPS) {
 			locationManager.removeUpdates(locationListener);
@@ -339,6 +342,11 @@ public class MainActivity extends LogActivity {
 		removeGPSLis();
 	}
 
+	/**
+	 * start service by class
+	 * @param c
+	 * @param current
+	 */
 	public void startServiceByClass(Class c, LatLng current) {
 		Intent intent = new Intent(MainActivity.this, c);
 		intent.putExtra(Util.REQUEST_TYPE, Util.GET_REVIEW);
@@ -347,6 +355,11 @@ public class MainActivity extends LogActivity {
 		startService(intent);
 	}
 
+	/**
+	 * move map to the specific location
+	 * 
+	 * @param current
+	 */
 	public void moveMap(LatLng current) {
 		map.clear();
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
@@ -369,6 +382,9 @@ public class MainActivity extends LogActivity {
 			return true;
 		case R.id.pubOption:
 			showDialog();
+			return true;
+		case R.id.webOption:
+			showWebView();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -411,6 +427,9 @@ public class MainActivity extends LogActivity {
 		notifyUser("Successfully UNSUBSCRIBE");
 	}
 
+	/**
+	 * show send warning dialog
+	 */
 	public void showDialog() {
 		// custom dialog
 		final Dialog dialog = new Dialog(this);
@@ -438,6 +457,14 @@ public class MainActivity extends LogActivity {
 		dialog.show();
 	}
 
+	/**
+	 * show web view 
+	 */
+	public void showWebView(){
+		Intent intent = new Intent(MainActivity.this,
+				WebViewActivity.class);
+		startActivity(intent);
+	}
 	/**
 	 * publish the message via pubnub.
 	 * 

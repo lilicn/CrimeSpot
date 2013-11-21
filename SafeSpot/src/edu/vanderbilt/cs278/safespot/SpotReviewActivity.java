@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,27 +28,29 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * details information to display
+ * 
+ * @author Di & Li
+ * 
+ */
 public class SpotReviewActivity extends Activity {
 	private static final String TAG = "SpotReviewActivity";
 	private LocationReview currentLoc = null;
 	private GoogleMap map;
 	private RatingBar ratingBar;
-	private ArrayAdapter<LocationReview> listAdapter;
-	private List<LocationReview> reviewLists = new ArrayList<LocationReview> ();
-	private LocationReview[] locationsreivews = null;
+	private ArrayAdapter<String> listAdapter;
+	private List<String> reviewLists = new ArrayList<String>();
 	private ListView list;
-	private Context mContext;
 	private static Handler handler;
 	private EditText text;
 
 	private class MyHandler extends Handler {
-		private Context ctx;
 		private final static String TAG = "MyHandler";
 		private long zone;
-		private List<LocationReview> reviewLists;
+		private List<String> reviewLists;
 
-		public MyHandler(Context ctx, long zone,  List<LocationReview> reviewLists ) {
-			this.ctx = ctx;
+		public MyHandler(long zone, List<String> reviewLists) {
 			this.zone = zone;
 			this.reviewLists = reviewLists;
 		}
@@ -64,24 +65,26 @@ public class SpotReviewActivity extends Activity {
 				switch (msg.what) {
 				case Util.GET_LIST: {
 					long temp = json.getLong(Util.ZONE);
-					if(temp==zone){
+					if (temp == zone) {
 						// from newest to oldest
-						for(int i = 1; i<=10; i++){
+						for (int i = 1; i <= 10; i++) {
 							String com = null;
-							if(!(com=json.getString(i+"")).equals("")){
-								reviewLists.add(new LocationReview(com));
-							}						
+							if (!(com = json.getString(i + "")).equals("")) {
+								reviewLists.add(com);
+							}
 						}
 						showList();
 					}
 					break;
 				}
-				case Util.SEND_REVIEW:{
+				case Util.SEND_REVIEW: {
 					// do nothing now
+					Log.d(TAG, "send review successfully");
 					break;
 				}
-				case Util.SEND_STAR:{				
+				case Util.SEND_STAR: {
 					// do nothing now
+					Log.d(TAG, "send star successfully");
 					break;
 				}
 				default:
@@ -90,7 +93,7 @@ public class SpotReviewActivity extends Activity {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}		
+			}
 		}
 	};
 
@@ -107,10 +110,11 @@ public class SpotReviewActivity extends Activity {
 		text = (EditText) findViewById(R.id.ratingBar2);
 
 		Bundle bundle = getIntent().getExtras();
-		
+
 		currentLoc = (LocationReview) bundle.getSerializable("locationReview");
 		initializeMap();
-		handler = new MyHandler(SpotReviewActivity.this,Util.getZoneFromGEO(new LatLng(currentLoc.getLat(),currentLoc.getLon())),reviewLists);
+		handler = new MyHandler(Util.getZoneFromGEO(new LatLng(currentLoc
+				.getLat(), currentLoc.getLon())), reviewLists);
 		getListData();
 	}
 
@@ -122,12 +126,17 @@ public class SpotReviewActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * start service to get list data
+	 */
 	private void getListData() {
-		List<LocationReview> reviews = new ArrayList<LocationReview>();
 		Intent intent = makeIntentByType(Util.GET_LIST);
-		startService(intent);		
+		startService(intent);
 	}
 
+	/**
+	 * initilize the map location
+	 */
 	private void initializeMap() {
 		LatLng current = new LatLng(currentLoc.getLat(), currentLoc.getLon());
 		map.clear();
@@ -135,6 +144,11 @@ public class SpotReviewActivity extends Activity {
 		map.addMarker(new MarkerOptions().position(current));
 	}
 
+	/**
+	 * submit review score
+	 * 
+	 * @param v
+	 */
 	public void onSubmitClick(View v) {
 		Toast.makeText(this, "Sending Review to Server", Toast.LENGTH_SHORT)
 				.show();
@@ -145,13 +159,17 @@ public class SpotReviewActivity extends Activity {
 
 	}
 
+	/**
+	 * submit comment
+	 * 
+	 * @param v
+	 */
 	public void onSubmitComment(View v) {
 		String comment = text.getText().toString();
 		if (comment != null) {
 			LocationReview temp = new LocationReview();
-			temp.setComment(comment);
-			reviewLists.add(0,temp);
-			showList();		
+			reviewLists.add(0, comment);
+			showList();
 			Intent intent = makeIntentByType(Util.SEND_REVIEW);
 			intent.putExtra(Util.REVIEW, comment);
 			startService(intent);
@@ -160,6 +178,12 @@ public class SpotReviewActivity extends Activity {
 					.show();
 	}
 
+	/**
+	 * get intent by send type
+	 * 
+	 * @param SEND_TYPE
+	 * @return
+	 */
 	public Intent makeIntentByType(int SEND_TYPE) {
 		Intent intent = new Intent(this, SpotService.class);
 		intent.putExtra(Util.REQUEST_TYPE, SEND_TYPE);
@@ -168,11 +192,13 @@ public class SpotReviewActivity extends Activity {
 				new LatLng(currentLoc.getLat(), currentLoc.getLon()));
 		return intent;
 	}
-	
-	public void showList(){
+
+	/**
+	 * show list in the UI
+	 */
+	public void showList() {
 		listAdapter = new ArrayAdapterItem(this, R.layout.list_item,
 				reviewLists);
-
 		list.setAdapter(listAdapter);
 	}
 }

@@ -13,6 +13,12 @@ import com.google.android.gms.maps.model.LatLng;
 import edu.vanderbilt.cs278.safespot.crimedata.DataCollectorThread;
 import edu.vanderbilt.cs278.safespot.crimedata.GPSData;
 
+/**
+ * it is used to get nearby crimes happened recently
+ * 
+ * @author Li
+ *
+ */
 public class CrimeService  extends IntentService{
 	private final String TAG = getClass().getSimpleName();
 	public CrimeService() {

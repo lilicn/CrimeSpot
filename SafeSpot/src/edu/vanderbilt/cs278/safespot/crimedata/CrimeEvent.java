@@ -1,6 +1,11 @@
 package edu.vanderbilt.cs278.safespot.crimedata;
 import java.util.Date;
 
+/**
+ * 
+ * @author  Di & Li
+ *
+ */
 public class CrimeEvent {
 	public String crimeType;
 	public String address;

@@ -11,14 +11,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ArrayAdapterItem extends ArrayAdapter<LocationReview> {
+/**
+ * 
+ * @author Di & Li
+ *
+ */
+public class ArrayAdapterItem extends ArrayAdapter<String> {
 
 	Context mContext;
 	int layoutResourceId;
-	List<LocationReview> data = null;
+	List<String> data = null;
 
 	public ArrayAdapterItem(Context context, int resource,
-			List<LocationReview> objects) {
+			List<String> objects) {
 		super(context, resource, objects);
 		this.layoutResourceId = resource;
 		this.mContext = context;
@@ -33,8 +38,7 @@ public class ArrayAdapterItem extends ArrayAdapter<LocationReview> {
 				.findViewById(R.id.imageView1);
 		TextView text_score = (TextView) contentView
 				.findViewById(R.id.list_score);
-		text_score.setText(data.get(position).getComment() + "");
-
+		text_score.setText(data.get(position));
 		return contentView;
 
 	}

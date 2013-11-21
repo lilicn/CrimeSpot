@@ -4,29 +4,35 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-public class LogActivity extends Activity{
+/**
+ * to get log during activity life cycle
+ * 
+ * @author Li
+ * 
+ */
+public class LogActivity extends Activity {
 	private final String TAG = getClass().getSimpleName();
+
 	/**
 	 * overrided method for onCreate.
 	 */
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate()");
-		if(savedInstanceState==null){
+		if (savedInstanceState == null) {
 			Log.d(TAG, "activity created a new");
-		}else{
+		} else {
 			Log.d(TAG, "activity restarted");
 		}
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-		Log.d(TAG,"onSaveInstanceState CURRENTGRO");
+		Log.d(TAG, "onSaveInstanceState CURRENTGRO");
 	}
-	
-	
+
 	/**
 	 * overrided method for onStart.
 	 */

@@ -66,18 +66,23 @@ public class CrimeSpotServerServlet extends HttpServlet {
 			break;
 		case Util.SEND_STAR:
 			// save star
-			double star =Double.parseDouble(req.getParameter(Util.REVIEW));
-			resp.getWriter().println(saveStar(getZone(req),star));
+			double star = Double.parseDouble(req.getParameter(Util.REVIEW));
+			resp.getWriter().println(saveStar(getZone(req), star));
 			break;
 
 		case Util.SEND_REVIEW:
 			// save review
 			String revi = req.getParameter(Util.REVIEW);
-			resp.getWriter().println(saveReview(getZone(req),revi));
+			resp.getWriter().println(saveReview(getZone(req), revi));
 			break;
 		case Util.GET_LIST:
 			// send all review
-			resp.getWriter().println(sendList(getZone(req)));
+			try {
+				resp.getWriter().println(sendList(getZone(req)));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		default:
 			break;
@@ -94,10 +99,10 @@ public class CrimeSpotServerServlet extends HttpServlet {
 
 	public String saveReview(long id, String rev) {
 		pm = PMF.get().getPersistenceManager();
-		Comment comm = pm.getObjectById(Comment.class,id);
+		Comment comm = pm.getObjectById(Comment.class, id);
 		comm.addComment(rev);
 		comm.saveComment(pm);
-		pm.close();		
+		pm.close();
 		return "success";
 	}
 
@@ -110,9 +115,9 @@ public class CrimeSpotServerServlet extends HttpServlet {
 		return "success";
 	}
 
-	public String sendList(long id) {
+	public String sendList(long id) throws JSONException {
 		pm = PMF.get().getPersistenceManager();
-		Comment comm = pm.getObjectById(Comment.class,id);
+		Comment comm = pm.getObjectById(Comment.class, id);
 		ArrayList<String> list = comm.getList();
 		JSONObject json = new JSONObject();
 		try {
@@ -123,17 +128,16 @@ public class CrimeSpotServerServlet extends HttpServlet {
 		}
 		pm.close();
 		int size = list.size();
-		
-		for(int i = size; i>=0; i--){
-			// only return the last ten comments
-			if(size-i<10){
-				try {
-					json.put(i-size+"", list.get(i));
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		// from newest to oldest
+		for (int j = 1; j <= 10; j++) {
+			if (size - j >= 0) {
+				json.put(j + "", list.get(size - j));
+			} else {
+				json.put(j + "", "");
 			}
+		}
+		if (size < 10) {
+
 		}
 		return json.toString();
 	}

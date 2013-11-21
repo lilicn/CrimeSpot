@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author  Di & Li
+ *
+ */
 public class DataCollectorThread {
 	public static String getCrimeNearby(GPSData gps) {
 		String url = "http://api.spotcrime.com/crimes.json?lat=" + gps.lat
