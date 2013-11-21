@@ -19,7 +19,7 @@
         <fragment
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             class="com.google.android.gms.maps.MapFragment" />
     </LinearLayout>
 
@@ -34,72 +34,48 @@
         <LinearLayout
             android:id="@+id/layout_ratingBar1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Safe Facility: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal" >
 
             <RatingBar
                 android:id="@+id/ratingBar1"
                 style="?android:attr/ratingBarStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:numStars="4" />
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSubmitClick"
+                android:text="@string/rate" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_ratingBar2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_ratingBar1" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Light availability: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            <RatingBar
-                android:id="@+id/ratingBar2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_ratingBar3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_ratingBar2" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="People Around: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            <RatingBar
-                android:id="@+id/ratingBar3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/layout_ratingBar3" >
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/layout_ratingBar1"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/ratingBar2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:hint="@string/comment" />
 
             <Button
-                android:id="@+id/btn_submit"
-                android:layout_width="wrap_content"
+                android:id="@+id/comment_submit"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                android:onClick="onSubmitClick" />
-
-            <Spinner
-                android:id="@+id/spinner1"
-                android:layout_width="108dp"
-                android:layout_height="wrap_content"
-                android:gravity="right" />
+                android:layout_weight="1"
+                android:onClick="onSubmitComment"
+                android:text="@string/send" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -1,8 +1,7 @@
 package edu.vanderbilt.cs278.crimespot.server;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.ArrayList;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
+import edu.vanderbilt.cs278.crimespot.server.data.Comment;
 import edu.vanderbilt.cs278.crimespot.server.data.PMF;
 import edu.vanderbilt.cs278.crimespot.server.data.Util;
 import edu.vanderbilt.cs278.crimespot.server.data.Zone;
@@ -52,13 +52,90 @@ public class CrimeSpotServerServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/plain");
-		resp.getWriter().println(makeResp(1));
+		resp.getWriter().println(sendBasic(1));
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+
+		int type = Integer.parseInt(req.getParameter(Util.REQUEST_TYPE));
 		resp.setContentType("text/plain");
-		resp.getWriter().println(makeResp(getZone(req)));
+		switch (type) {
+		case Util.GET_REVIEW:
+			resp.getWriter().println(sendBasic(getZone(req)));
+			break;
+		case Util.SEND_STAR:
+			// save star
+			double star =Double.parseDouble(req.getParameter(Util.REVIEW));
+			resp.getWriter().println(saveStar(getZone(req),star));
+			break;
+
+		case Util.SEND_REVIEW:
+			// save review
+			String revi = req.getParameter(Util.REVIEW);
+			resp.getWriter().println(saveReview(getZone(req),revi));
+			break;
+		case Util.GET_LIST:
+			// send all review
+			resp.getWriter().println(sendList(getZone(req)));
+			break;
+		default:
+			break;
+		}
+	}
+
+	public String sendBasic(long id) {
+		pm = PMF.get().getPersistenceManager();
+		Zone res = pm.getObjectById(Zone.class, id);
+		Zone result = pm.detachCopy(res);
+		pm.close();
+		return makeObj(result).toString();
+	}
+
+	public String saveReview(long id, String rev) {
+		pm = PMF.get().getPersistenceManager();
+		Comment comm = pm.getObjectById(Comment.class,id);
+		comm.addComment(rev);
+		comm.saveComment(pm);
+		pm.close();		
+		return "success";
+	}
+
+	public String saveStar(long id, double rev) {
+		pm = PMF.get().getPersistenceManager();
+		Zone res = pm.getObjectById(Zone.class, id);
+		res.addUserRev(rev);
+		res.saveZone(pm);
+		pm.close();
+		return "success";
+	}
+
+	public String sendList(long id) {
+		pm = PMF.get().getPersistenceManager();
+		Comment comm = pm.getObjectById(Comment.class,id);
+		ArrayList<String> list = comm.getList();
+		JSONObject json = new JSONObject();
+		try {
+			json.put(Util.ZONE, comm.getID());
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		pm.close();
+		int size = list.size();
+		
+		for(int i = size; i>=0; i--){
+			// only return the last ten comments
+			if(size-i<10){
+				try {
+					json.put(i-size+"", list.get(i));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return json.toString();
 	}
 
 	/**
@@ -76,28 +153,14 @@ public class CrimeSpotServerServlet extends HttpServlet {
 			double longitude = Double.parseDouble(req.getParameter("lon"));
 			zone = Util.getZoneFromGeo(latitude, longitude);
 			break;
-		case "add":
-			zone = Util.getZoneFromAdd(req.getParameter("add"));
+		case "zone":
+			zone = Long.parseLong(req.getParameter("zone"));
 			break;
 
 		default:
 			break;
 		}
 		return zone;
-	}
-
-	/**
-	 * make response according to the zone id
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public String makeResp(long id) {
-		pm = PMF.get().getPersistenceManager();
-		Zone res = pm.getObjectById(Zone.class, id);
-		Zone result = pm.detachCopy(res);
-		pm.close();
-		return makeObj(result).toString();
 	}
 
 	/**

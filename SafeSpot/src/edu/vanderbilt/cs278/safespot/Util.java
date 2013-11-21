@@ -26,10 +26,12 @@ public class Util {
 	public final static String SCORE = "safety point";
 	public final static String REVIEW = "user review";
 	public final static String REQUEST_TYPE = "request type";
-	public enum Request_Type {
-		GET_REVIEW, SEND_REVIEW, GET_LIST
-	}
-
+	public final static String TIME="TIME";
+	public final static int GET_REVIEW = 10;
+	public final static int SEND_REVIEW = 20;
+	public final static int GET_LIST = 30;
+	public final static int SEND_STAR = 40;
+	public final static String ZONE = "zone";
 	/**
 	 * change geocode to zone number
 	 * 
@@ -37,7 +39,7 @@ public class Util {
 	 * @return
 	 */
 	public static long getZoneFromGEO(LatLng current) {
-		return 1;
+		return 2;
 	}
 	
 	public static String getChannelByZone(long zone){

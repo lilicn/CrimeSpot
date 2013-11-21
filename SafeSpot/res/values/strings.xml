@@ -15,5 +15,6 @@
     <string name="title_activity_pub">PubActivity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_spot_review">SpotReview</string>
-
+	<string name="rate">RATE</string>
+	<string name="comment">Your comment</string>
 </resources>

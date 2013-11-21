@@ -34,54 +34,84 @@ import com.google.android.gms.maps.model.LatLng;
  * 
  */
 public class SpotService extends IntentService {
-        private final static String TAG = "SpotService";
+	private final static String TAG = "SpotService";
 
-        public SpotService() {
-                super("SpotService");
-        }
+	public SpotService() {
+		super("SpotService");
+	}
 
-        @Override
-        protected void onHandleIntent(Intent intent) {
-                LatLng latlng = (LatLng) intent.getExtras().get(Util.LATLNG);
-                Log.d(TAG, latlng.latitude + "," + latlng.longitude);
-                Messenger messenger = (Messenger) intent.getExtras()
-                                .get(Util.MESSENGER);
+	@Override
+	protected void onHandleIntent(Intent intent) {
+		LatLng latlng = (LatLng) intent.getExtras().get(Util.LATLNG);
+		Log.d(TAG, latlng.latitude + "," + latlng.longitude);
+		Messenger messenger = (Messenger) intent.getExtras()
+				.get(Util.MESSENGER);
 
-                HttpPost post = new HttpPost(Util.URL);
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-                nameValuePairs.add(new BasicNameValuePair(Util.TYPE, Util.GEO));
-                nameValuePairs.add(new BasicNameValuePair(Util.LAT, latlng.latitude
-                                + ""));
-                nameValuePairs.add(new BasicNameValuePair(Util.LON, latlng.longitude
-                                + ""));
-                try {
-                        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                        HttpClient client = new DefaultHttpClient();
-                        HttpResponse response = client.execute(post);
-                        HttpEntity entity = response.getEntity();
-                        String responseText = EntityUtils.toString(entity);
+		HttpPost post = new HttpPost(Util.URL);
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+		nameValuePairs.add(new BasicNameValuePair(Util.TYPE, Util.GEO));
+		nameValuePairs.add(new BasicNameValuePair(Util.LAT, latlng.latitude
+				+ ""));
+		nameValuePairs.add(new BasicNameValuePair(Util.LON, latlng.longitude
+				+ ""));
 
-                        Message msg = Message.obtain();
-                        msg.what = Util.RESPONSE;
-                        Bundle bundle = new Bundle();
-                        bundle.putString(Util.INFO, responseText);
-                        bundle.putDouble(Util.LAT, latlng.latitude);
-                        bundle.putDouble(Util.LON, latlng.longitude);
-                        msg.setData(bundle);
-                        Log.d(TAG, responseText);
-                        // send message
-                        messenger.send(msg);
+		int type = intent.getExtras().getInt(Util.REQUEST_TYPE);
+		switch (type) {
+		case Util.GET_REVIEW:
+			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
+					Util.GET_REVIEW + ""));
+			break;
+		case Util.SEND_REVIEW:
+			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
+					Util.SEND_REVIEW + ""));
+			String review = intent.getStringExtra(Util.REVIEW);
+			nameValuePairs.add(new BasicNameValuePair(Util.REVIEW,review));
+			break;
+			
+		case Util.SEND_STAR:
+			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
+					Util.SEND_STAR + ""));
+			double star = intent.getDoubleExtra(Util.REVIEW,0);
+			nameValuePairs.add(new BasicNameValuePair(Util.REVIEW,star+""));
+		case Util.GET_LIST:
+			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
+					Util.GET_LIST + ""));
+			break;
+		default:
+			break;
+		}
 
-                } catch (UnsupportedEncodingException e) {
-                        Log.e(TAG, e.toString() + ":" + e.getMessage());
-                } catch (ClientProtocolException e) {
-                        Log.e(TAG, e.toString() + ":" + e.getMessage());
-                } catch (IOException e) {
-                        Log.e(TAG, e.toString() + ":" + e.getMessage());
-                } catch (RemoteException e) {
-                        Log.e(TAG, e.toString() + ":" + e.getMessage());
-                }
+		try {
+			post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(post);
+			HttpEntity entity = response.getEntity();
+			String responseText = EntityUtils.toString(entity);
 
-        }
+			Message msg = Message.obtain();
+			
+			msg.what = type;
+			Bundle bundle = new Bundle();
+			bundle.putString(Util.INFO, responseText);
+			if(type==Util.GET_REVIEW){
+				bundle.putDouble(Util.LAT, latlng.latitude);
+				bundle.putDouble(Util.LON, latlng.longitude);
+			}		
+			msg.setData(bundle);
+			Log.d(TAG, responseText);
+			// send message
+			messenger.send(msg);
+
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, e.toString() + ":" + e.getMessage());
+		} catch (ClientProtocolException e) {
+			Log.e(TAG, e.toString() + ":" + e.getMessage());
+		} catch (IOException e) {
+			Log.e(TAG, e.toString() + ":" + e.getMessage());
+		} catch (RemoteException e) {
+			Log.e(TAG, e.toString() + ":" + e.getMessage());
+		}
+
+	}
 
 }

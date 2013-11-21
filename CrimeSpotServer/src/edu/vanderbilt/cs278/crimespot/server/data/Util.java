@@ -14,17 +14,13 @@ import javax.jdo.PersistenceManager;
  */
 public class Util {
 	public final static String[] CRIME_TYPES = {"WEAPONS","VEHICLE BREAK-IN/THEFT","VANDALISM","THEFT/LARCENY","SEX CRIMES","ROBBERY","MOTOR VEHICLE THEFT","HOMICIDE","FRAUD","DUI","DRUGS/ALCOHOL VIOLATIONS","DISTURBING THE PEACE","BURGLARY","ASSAULT","ARSON"};
-	
-	/**
-	 * need modified
-	 * get zone id from address
-	 * @param add address 
-	 * @return zone id 
-	 */
-	public static long getZoneFromAdd(String add){
-		return 1;
-	}
-	
+	public final static int GET_REVIEW = 10;
+	public final static int SEND_REVIEW = 20;
+	public final static int GET_LIST = 30;
+	public final static int SEND_STAR = 40;
+	public final static String REQUEST_TYPE = "request type";
+	public final static String REVIEW = "user review";
+	public final static String ZONE = "zone";
 	/**
 	 * need modified
 	 * get zone id from latitude and longitude
@@ -56,12 +52,16 @@ public class Util {
 				double val = Double.parseDouble(strs[1]);
 //				Zone z = Zone.byID(id, pm);
 				Zone z = null;
+				Comment comm = null;
 				if(z==null){
 					z = new Zone();
-					z.setID(id);
+					z.setID(id);					
+					comm = new Comment();
+					comm.setID(id);
 				}		
 				z.setTotalVal(val);
 				z.saveZone(pm);
+				comm.saveComment(pm);
 				System.out.println("Zone "+z.getID()+" has created/updated!");
 			}
 		}

@@ -69,7 +69,7 @@ public class MainActivity extends LogActivity {
 	// SSL_ON?
 	private Pubnub pubnub = new Pubnub("demo", "demo", "", false);
 	private boolean isSub = false;
-	private LatLng CURRENTGRO;
+	private LatLng CURRENTGRO = new LatLng(36.14513101,-86.80215537);
 	private final static String LASTLAT = "LASTLAT";
 	private final static String LASTLON = "LASTLON";
 	private final String TAG = getClass().getSimpleName();
@@ -137,22 +137,25 @@ public class MainActivity extends LogActivity {
 						data.getDouble(Util.LON));
 				String info = data.getString(Util.INFO);
 				// get score from info
-				String score = null;
-				String review = null;
+				double score = 0;
+				double review = 0;
 				try {
 					JSONObject obj = new JSONObject(info);
-					score = obj.getString(Util.SCORE);
-					review = obj.getString(Util.REVIEW);
+					score = obj.getDouble(Util.SCORE);
+					review = obj.getDouble(Util.REVIEW);
+					review = review==-1?0:review;
 				} catch (JSONException e) {
 					Log.e(TAG, e.toString() + ":" + e.getMessage());
-				}
-				curDisplayLoc.lat = current.latitude;
-				curDisplayLoc.lon = current.longitude;
-				curDisplayLoc.score = score;
+				}			
 				map.clear();
 				// now only show the total safety score
 				marker = map.addMarker(new MarkerOptions().position(current)
-						.title(Util.TITLE).snippet("safety score:" + score));
+						.title(Util.TITLE).snippet("Safety score:" + score));
+				// set current display location
+				curDisplayLoc.setLat(current.latitude);
+				curDisplayLoc.setLon(current.longitude);
+				curDisplayLoc.setScore(score);
+				curDisplayLoc.setReview(review);
 				break;
 			}
 			case Util.RESPONSE_CRIME: {
@@ -174,8 +177,6 @@ public class MainActivity extends LogActivity {
 				break;
 			}
 		}
-
-		InfoWindowAdapter m_InfoWindowAdapter = null;
 
 		/**
 		 * add marker for nearby crimes happened recently
@@ -220,22 +221,25 @@ public class MainActivity extends LogActivity {
 					savedInstanceState.getDouble(LASTLON));
 			subZone = Util.getZoneFromGEO(CURRENTGRO);
 			Log.d(TAG, "onCreate CURRENTGRO: " + CURRENTGRO.latitude + ","
-					+ CURRENTGRO.longitude);
-			moveMap(CURRENTGRO);
+					+ CURRENTGRO.longitude);			
 		}
-
+		moveMap(CURRENTGRO);
 		setWindowAdp();
 	}
 
+	/**
+	 * set onclick listerner for marker
+	 */
 	public void setWindowAdp() {
 		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-
 			@Override
 			public void onInfoWindowClick(Marker arg0) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this, SpotReviewActivity.class);
+				Intent intent = new Intent(MainActivity.this,
+						SpotReviewActivity.class);
 				intent.putExtra("locationReview", curDisplayLoc);
 				startActivity(intent);
+
 			}
 		});
 	}
@@ -262,7 +266,6 @@ public class MainActivity extends LogActivity {
 		}
 		if (isSub)
 			runSubscribe();
-		setWindowAdp();
 	}
 
 	@Override
@@ -338,6 +341,7 @@ public class MainActivity extends LogActivity {
 
 	public void startServiceByClass(Class c, LatLng current) {
 		Intent intent = new Intent(MainActivity.this, c);
+		intent.putExtra(Util.REQUEST_TYPE, Util.GET_REVIEW);
 		intent.putExtra(Util.MESSENGER, new Messenger(handler));
 		intent.putExtra(Util.LATLNG, current);
 		startService(intent);

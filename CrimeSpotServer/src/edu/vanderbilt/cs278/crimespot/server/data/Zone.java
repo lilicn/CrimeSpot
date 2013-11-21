@@ -24,7 +24,7 @@ public class Zone {
 	@Persistent
 	private double aveRev = -1;
 	@Persistent
-	private long userRev = 0;
+	private double userRev = 0;
 	@Persistent
 	private long revNum = 0;
 
@@ -60,7 +60,7 @@ public class Zone {
 		return this.aveRev;
 	}
 
-	public void addUserRev(int rev) {
+	public void addUserRev(double rev) {
 		this.userRev += rev;
 		this.revNum++;
 		setAveRev();

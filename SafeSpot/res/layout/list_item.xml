@@ -8,43 +8,19 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_compass" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/txt_lat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/txt_lon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </LinearLayout>
+        android:src="@drawable/boy" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="Safe Score:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="Anonymous:"/>
 
     <TextView
         android:id="@+id/list_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="Large Text" />
 
 </LinearLayout>
