@@ -54,7 +54,7 @@ public class Util {
 		}
 	
 		else
-			return -1;
+			return 55;
 	}
 	
 	public static String getChannelByZone(long zone){
