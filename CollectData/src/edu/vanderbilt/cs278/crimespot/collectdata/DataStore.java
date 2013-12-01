@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.util.List;
 
+import org.json.JSONException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,18 +46,19 @@ public class DataStore {
 	 * get history data
 	 * 
 	 * @param name
+	 * @throws JSONException
 	 */
-	public static void getHistoryDataByName(String name) {
+	public static void getHistoryDataByName(String name) throws JSONException {
 		List<String> list = Url.getUrlListbyName(name);
 		try {
 			int i = 1;
 			for (String url : list) {
-				PrintWriter pw = DataStore.getPWByName(name+"_"+(i++));
+				PrintWriter pw = DataStore.getPWByName(name + "_" + (i++));
 				System.out.println(url);
 				getDataByUrl(url, pw, name);
 				pw.close();
 			}
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,12 +70,13 @@ public class DataStore {
 	 * get current data
 	 * 
 	 * @param name
+	 * @throws JSONException
 	 */
-	public static void getDataByName(String name) {
+	public static void getDataByName(String name) throws JSONException {
 		String url = Url.getUrlbyName(name);
 		System.out.println(url);
 		try {
-			PrintWriter pw = DataStore.getPWByName(name+"_7");
+			PrintWriter pw = DataStore.getPWByName(name + "_8");
 			getDataByUrl(url, pw, name);
 			pw.close();
 		} catch (IOException e) {
@@ -86,8 +90,12 @@ public class DataStore {
 	 * 
 	 * @param url
 	 * @param pw
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws MalformedURLException
 	 */
-	public static void getDataByUrl(String url, PrintWriter pw, String name) {
+	public static void getDataByUrl(String url, PrintWriter pw, String name)
+			throws MalformedURLException, IOException, JSONException {
 		WebDriver driver = new HtmlUnitDriver();
 		driver.get(url);
 		// check if there is any update
@@ -105,13 +113,16 @@ public class DataStore {
 		for (int i = allRows.size() - 1; i >= 0; i--) {
 			List<WebElement> cells = allRows.get(i).findElements(
 					By.tagName("td"));
+
 			if (cells.size() > 5) {
-				pw.println(cells.get(1).getText()
-						+ ","
-						+ cells.get(5).getText()
-						+ ","
-						+ (cells.get(3).getText().replaceAll("&", "AND").toString().replaceAll(" ", "_")).toString()
-								+ "_" + name);
+				String addr = (cells.get(3).getText().replaceAll("&", "AND")
+						.toString().replaceAll(" ", "_")).toString()
+						+ "_" + name;
+				String geo = GeoCode.getGeoByAddr(addr);
+				String result = cells.get(1).getText() + ","
+						+ cells.get(5).getText() + "," + geo + "," + addr;
+				pw.println(result);
+				System.out.println(result);
 			} else
 				break;
 		}

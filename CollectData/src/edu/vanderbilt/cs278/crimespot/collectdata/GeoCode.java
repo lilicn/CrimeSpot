@@ -17,13 +17,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * 
+ * get geocode
+ * @author Li
+ *
+ */
 public class GeoCode {
 	private final static String START = "http://maps.googleapis.com/maps/api/geocode/json?address=";
 	private final static String END = "&sensor=true";
 	private final static String PATH = "data/";
-	private HashMap<String, String> geoHM = new HashMap<String, String>();
+	private static HashMap<String, String> geoHM = new HashMap<String, String>();
 
-	public String getGeoByAddr(String addr) throws MalformedURLException,
+	public static String getGeoByAddr(String addr) throws MalformedURLException,
 			IOException, JSONException {
 		if (geoHM.containsKey(addr)) {
 			return geoHM.get(addr);
@@ -79,7 +85,7 @@ public class GeoCode {
 	 * @return
 	 * @throws IOException
 	 */
-	private String readAll(Reader rd) throws IOException {
+	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;
 		while ((cp = rd.read()) != -1) {
@@ -112,7 +118,6 @@ public class GeoCode {
 				PrintWriter pw = DataStore.getPWByName(name);
 				BufferedReader br = new BufferedReader(new FileReader(
 						file.getAbsolutePath()));
-				StringBuilder sb = new StringBuilder();
 				String line;
 				while ((line = br.readLine()) != null) {
 					Thread.sleep(1000);

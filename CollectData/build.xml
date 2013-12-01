@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<project name="CollectData" basedir="." default="main">
+	<property name="src" value="src/" />
+	<property name="build" value="build/" />
+	<property name="lib" value="lib/" />
+	<property name="jar" value="CollectData.jar" />
+	<property name="classes" value="build/" />
+
+	<!-- save log into files -->
+	<record name="log/records-simple.log" />
+	<record name="log/ISO.log" loglevel="verbose" />
+	<record name="log/debug.log" loglevel="debug" />
+
+	<!-- check if build directory exists -->
+	<target name="check">
+		<condition property="deldir">
+			<available file="${build}" type="dir" />
+		</condition>
+	</target>
+
+	<!-- Delete build directory -->
+	<target name="deleteBuild" depends="check" if="deldir">
+		<delete includeemptydirs="true">
+			<fileset dir="${build}" includes="**/*" />
+		</delete>
+	</target>
+
+	<!-- make one lib jar -->
+	<target name="libJar" depends="deleteBuild">
+		<zip destfile="lib.jar">
+			<zipgroupfileset dir="${lib}" includes="*.jar" />
+		</zip>
+	</target>
+
+	<!-- create a build directory -->
+	<target name="createBuild" depends="libJar">
+		<mkdir dir="${build}" />
+		<javac classpath="lib.jar" destdir="${build}" includeantruntime="false"
+			srcdir="${src}" compiler="javac1.7" debug="on" nowarn="yes" />
+	</target>
+
+	<!-- collect yesterday's data -->
+	<target name="collectData" depends="createBuild">
+		<java fork="true"
+			classname="edu.vanderbilt.cs278.crimespot.collectdata.UpdateMain"
+			classpath="${build}:lib.jar">
+		</java>
+	</target>
+	
+	<target name="main" depends="collectData" />
+
+</project>

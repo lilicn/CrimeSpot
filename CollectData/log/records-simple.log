@@ -1,0 +1,24 @@
+
+check:
+
+deleteBuild:
+
+libJar:
+      [zip] Building zip: C:\Users\Li\Desktop\CollectData\lib.jar
+
+createBuild:
+    [javac] Compiling 6 source files to C:\Users\Li\Desktop\CollectData\build
+
+collectData:
+     [java] http://www.crimemapping.com/DetailedReport.aspx?db=11/30/2013+00:00:00&de=11/30/2013+23:59:00&ccs=AR,AS,BU,DP,DR,DU,FR,HO,VT,RO,SX,TH,VA,VB,WE&xmin=-9667325.480312608&ymin=4321245.467651127&xmax=-9654273.857732933&ymax=4325697.924548732
+     [java] Dec 01, 2013 1:52:14 AM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler error
+     [java] WARNING: CSS error: 'http://www.crimemapping.com/css/reset.css' [1:1] Error in style sheet. (Invalid token "\u9518". Was expecting one of: <EOF>, <S>, <IDENT>, "<!--", "-->", <HASH>, <IMPORT_SYM>, <PAGE_SYM>, <MEDIA_SYM>, <FONT_FACE_SYM>, <CHARSET_SYM>, ".", ":", "*", "[", <ATKEYWORD>.)
+     [java] Dec 01, 2013 1:52:16 AM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler error
+     [java] WARNING: CSS error: 'http://www.crimemapping.com/css/detailed-report-101011.css' [1:1] Error in style sheet. (Invalid token "\u9518". Was expecting one of: <EOF>, <S>, <IDENT>, "<!--", "-->", <HASH>, <IMPORT_SYM>, <PAGE_SYM>, <MEDIA_SYM>, <FONT_FACE_SYM>, <CHARSET_SYM>, ".", ":", "*", "[", <ATKEYWORD>.)
+     [java] no new crime data updated now here
+     [java] Dec 01, 2013 1:52:16 AM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler error
+     [java] WARNING: CSS error: 'http://www.crimemapping.com/css/send-link-101111.css' [1:1] Error in style sheet. (Invalid token "\u9518". Was expecting one of: <EOF>, <S>, <IDENT>, "<!--", "-->", <HASH>, <IMPORT_SYM>, <PAGE_SYM>, <MEDIA_SYM>, <FONT_FACE_SYM>, <CHARSET_SYM>, ".", ":", "*", "[", <ATKEYWORD>.)
+
+main:
+
+BUILD SUCCESSFUL
