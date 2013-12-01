@@ -376,6 +376,9 @@ public class MainActivity extends LogActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
+		case R.id.historyAnalysis:
+			showHistory();
+			return true;
 		case R.id.showNearby:
 			showNearby();
 			return true;
@@ -401,7 +404,12 @@ public class MainActivity extends LogActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
+	public void showHistory(){
+		Intent intent = new Intent(MainActivity.this, HistoryAnalysisActivity.class);
+		intent.putExtra(Util.ID, Util.getZoneFromGEO(CURRENTGRO));
+		startActivity(intent);
+	}
 	/**
 	 * runSubscribe will subscribe our channel via subnub when use choose
 	 * subOption in Menu. It will let the handler to handle the received message

@@ -58,6 +58,9 @@
             android:label="@string/title_activity_spot_review" >
         </activity>
         <activity
+            android:name="edu.vanderbilt.cs278.safespot.HistoryAnalysisActivity">
+        </activity>
+        <activity
             android:name="edu.vanderbilt.cs278.safespot.WebViewActivity"
             android:label="@string/title_activity_web_view"
             android:parentActivityName="edu.vanderbilt.cs278.safespot.MainActivity" >

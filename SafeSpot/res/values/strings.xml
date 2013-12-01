@@ -9,6 +9,7 @@
     <string name="subscribe">Subscribe</string>
     <string name="unsubscribe">UnSubscribe</string>
     <string name="publish">Send Warning</string>
+    <string name="historyAnalysis">historyAnalysis</string>
     <string name="warning">Find some crime</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
