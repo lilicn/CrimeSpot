@@ -31,6 +31,14 @@ public class Util {
 	public final static int GET_LIST = 30;
 	public final static int SEND_STAR = 40;
 	public final static String ZONE = "zone";
+	
+	public final static double MAX_LAT = 36.19;
+	public final static double MIN_LAT = 36.138;
+	public final static double MAX_LNG = -86.72;
+	public final static double MIN_LNG = -86.85;
+	public final static double LATSTEP = 0.004;
+	public final static double LNGSTEP = 0.005;
+	
 	/**
 	 * change geocode to zone number
 	 * 
@@ -38,7 +46,15 @@ public class Util {
 	 * @return
 	 */
 	public static long getZoneFromGEO(LatLng current) {
-		return 2;
+		if(current.latitude<=MAX_LAT && current.latitude>=MIN_LAT && current.longitude<=MAX_LNG && current.longitude >= MIN_LNG){
+		    double row = Math.ceil(Math.abs(current.latitude-MAX_LAT)/LATSTEP);
+		    double column = Math.ceil(Math.abs(current.longitude-MIN_LNG)/LNGSTEP);
+		    double n = Math.round((MAX_LNG-MIN_LNG)/LNGSTEP);
+			return (long) ((row-1)*n + column);
+		}
+	
+		else
+			return -1;
 	}
 	
 	public static String getChannelByZone(long zone){
