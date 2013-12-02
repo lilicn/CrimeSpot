@@ -39,7 +39,7 @@ public class IntegrationTest extends
 	private String url = "http://1.tidal-analogy-395.appspot.com/crimespotserver";
 	private HttpPost post;
 	private List<NameValuePair> nameValuePairs;
-	private final static String TESTREVIEW = "test review 001";
+	private final static String TESTREVIEW = "test review for integration test";
 
 	public IntegrationTest() {
 		super(SpotReviewActivity.class);
@@ -123,7 +123,7 @@ public class IntegrationTest extends
 		}
 
 		// check latest review
-		assertTrue(responseText, obj.getString("10").toString()
+		assertTrue(responseText, obj.getString("1").toString()
 				.startsWith(TESTREVIEW));
 	}
 
