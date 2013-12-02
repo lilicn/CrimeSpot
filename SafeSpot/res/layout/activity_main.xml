@@ -23,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/address"
-            android:inputType="textUri|textMultiLine" />
+            android:inputType="textUri|textMultiLine" 
+            android:text="@string/default_add"/>
     </LinearLayout>
 
     <fragment

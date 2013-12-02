@@ -17,35 +17,39 @@ import edu.vanderbilt.cs278.safespot.crimedata.GPSData;
  * it is used to get nearby crimes happened recently
  * 
  * @author Li
- *
+ * 
  */
-public class CrimeService  extends IntentService{
+public class CrimeService extends IntentService {
 	private final String TAG = getClass().getSimpleName();
+
 	public CrimeService() {
 		super("CrimeService");
 	}
 
+	/**
+	 * Override method for onHandleIntent
+	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		LatLng current = (LatLng) intent.getExtras().get(Util.LATLNG);
-        Log.d(TAG, current.latitude + "," + current.longitude);
-             
+		Log.d(TAG, current.latitude + "," + current.longitude);
+
 		GPSData gps = new GPSData(current.latitude, current.longitude);
 		String crimeNearby = DataCollectorThread.getCrimeNearby(gps);
-		
+
 		Messenger messenger = (Messenger) intent.getExtras()
-                .get(Util.MESSENGER);  
+				.get(Util.MESSENGER);
 		Message msg = Message.obtain();
-        msg.what = Util.RESPONSE_CRIME;
-        Bundle bundle = new Bundle();
-        bundle.putString(Util.CRIMENEARBY, crimeNearby);
-        msg.setData(bundle);
-        // send message
-        try {
+		msg.what = Util.RESPONSE_CRIME;
+		Bundle bundle = new Bundle();
+		bundle.putString(Util.CRIMENEARBY, crimeNearby);
+		msg.setData(bundle);
+		// send message
+		try {
 			messenger.send(msg);
 		} catch (RemoteException e) {
-			Log.e(TAG,e.toString() +": "+e.getMessage());
-		}	
+			Log.e(TAG, e.toString() + ": " + e.getMessage());
+		}
 	}
 
 }

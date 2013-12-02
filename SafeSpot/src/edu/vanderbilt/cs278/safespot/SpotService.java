@@ -40,6 +40,9 @@ public class SpotService extends IntentService {
 		super("SpotService");
 	}
 
+	/**
+	 * Override method for onHandleIntent
+	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		LatLng latlng = (LatLng) intent.getExtras().get(Util.LATLNG);
@@ -65,14 +68,13 @@ public class SpotService extends IntentService {
 			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
 					Util.SEND_REVIEW + ""));
 			String review = intent.getStringExtra(Util.REVIEW);
-			nameValuePairs.add(new BasicNameValuePair(Util.REVIEW,review));
+			nameValuePairs.add(new BasicNameValuePair(Util.REVIEW, review));
 			break;
-			
 		case Util.SEND_STAR:
 			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
 					Util.SEND_STAR + ""));
-			double star = intent.getDoubleExtra(Util.REVIEW,0);
-			nameValuePairs.add(new BasicNameValuePair(Util.REVIEW,star+""));
+			double star = intent.getDoubleExtra(Util.REVIEW, 0);
+			nameValuePairs.add(new BasicNameValuePair(Util.REVIEW, star + ""));
 		case Util.GET_LIST:
 			nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
 					Util.GET_LIST + ""));
@@ -89,15 +91,15 @@ public class SpotService extends IntentService {
 			String responseText = EntityUtils.toString(entity);
 
 			Message msg = Message.obtain();
-			
+
 			msg.what = type;
 			Bundle bundle = new Bundle();
 			bundle.putString(Util.INFO, responseText);
-			
-			if(type==Util.GET_REVIEW){
+
+			if (type == Util.GET_REVIEW) {
 				bundle.putDouble(Util.LAT, latlng.latitude);
 				bundle.putDouble(Util.LON, latlng.longitude);
-			}		
+			}
 			msg.setData(bundle);
 			Log.d(TAG, responseText);
 			// send message

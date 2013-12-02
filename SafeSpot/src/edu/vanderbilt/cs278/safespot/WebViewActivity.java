@@ -8,8 +8,9 @@ import android.webkit.WebView;
 
 /**
  * web view to show crime distribution in Nashville
+ * 
  * @author Di & Li & Yao
- *
+ * 
  */
 public class WebViewActivity extends Activity {
 
@@ -19,15 +20,20 @@ public class WebViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_web_view);
-		webview = (WebView) findViewById(R.id.webView);		
-		webview.getSettings().setJavaScriptEnabled(true);
-		webview.getSettings().setUseWideViewPort(true);
-		webview.getSettings().setLoadWithOverviewMode(true);
-		webview.getSettings().setBuiltInZoomControls(true);
-		webview.getSettings().setSupportZoom(true);
-		showHeapMap();
+		webview = (WebView) findViewById(R.id.webView);
+		configWebView();
 	}
-
+	
+	public void configWebView(){
+		if (webview != null) {
+			webview.getSettings().setJavaScriptEnabled(true);
+			webview.getSettings().setUseWideViewPort(true);
+			webview.getSettings().setLoadWithOverviewMode(true);
+			webview.getSettings().setBuiltInZoomControls(true);
+			webview.getSettings().setSupportZoom(true);
+			showHeapMap();
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,7 +41,7 @@ public class WebViewActivity extends Activity {
 		getMenuInflater().inflate(R.menu.web_view, menu);
 		return true;
 	}
-	
+
 	/**
 	 * Override method for onOptionsItemSelected
 	 */
@@ -46,11 +52,11 @@ public class WebViewActivity extends Activity {
 		case R.id.Heapmap:
 			showHeapMap();
 			return true;
-			
+
 		case R.id.HeapmapWithWeight:
 			showHeapMapWithWeight();
 			return true;
-			
+
 		case R.id.Map:
 			showMap();
 			return true;
@@ -58,17 +64,17 @@ public class WebViewActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	public void showHeapMap(){
+
+	public void showHeapMap() {
 		webview.loadUrl("file:///android_asset/heatmap.html");
 	}
-	
-	public void showHeapMapWithWeight(){
+
+	public void showHeapMapWithWeight() {
 		webview.loadUrl("file:///android_asset/heatmapWeight.html");
 	}
-	
-	public void showMap(){
+
+	public void showMap() {
 		webview.loadUrl("file:///android_asset/map.html");
 	}
-	
+
 }

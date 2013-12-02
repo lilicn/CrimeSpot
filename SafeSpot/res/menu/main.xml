@@ -3,41 +3,47 @@
     <item
         android:id="@+id/webOption"
         android:showAsAction="never"
+        android:orderInCategory="100"
         android:title="@string/web"
         android:titleCondensed="@string/web">
+    </item>
+     <item android:id="@+id/historyAnalysis"
+          android:showAsAction="never"
+          android:title="@string/historyAnalysis"
+          android:titleCondensed="@string/historyAnalysis">
     </item>
     <item
         android:id="@+id/showNearby"
         android:showAsAction="never"
+        android:orderInCategory="100"
         android:title="@string/showNearby"
         android:titleCondensed="@string/showNearby"/>
     <item
         android:id="@+id/backToCur"
         android:showAsAction="never"
+        android:orderInCategory="100"
         android:title="@string/backToCur"
         android:titleCondensed="@string/backToCur"/>
     <item
         android:id="@+id/pubOption"
         android:showAsAction="never"
+        android:orderInCategory="100"
         android:title="@string/publish"
         android:titleCondensed="@string/publish">
     </item>
     <item
         android:id="@+id/subOption"
         android:showAsAction="never"
+        android:orderInCategory="100"
         android:title="@string/subscribe"
         android:titleCondensed="@string/subscribe">
     </item>
     <item
         android:id="@+id/unsubOption"
         android:showAsAction="never"
+        android:orderInCategory="100"
         android:title="@string/unsubscribe"
         android:titleCondensed="@string/unsubscribe">
-    </item>
-    <item android:id="@+id/historyAnalysis"
-          android:showAsAction="never"
-          android:title="@string/historyAnalysis"
-          android:titleCondensed="@string/historyAnalysis">
     </item>
 
 </menu>

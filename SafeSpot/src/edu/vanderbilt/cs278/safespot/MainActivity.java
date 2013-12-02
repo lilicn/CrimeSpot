@@ -55,7 +55,7 @@ import com.pubnub.api.PubnubError;
  */
 @SuppressLint("NewApi")
 public class MainActivity extends LogActivity {
-	private long subZone = 1;
+	private long subZone = 2;
 	private Pubnub pubnub = new Pubnub("demo", "demo", "", false);
 	private boolean isSub = false;
 	private LatLng CURRENTGRO = new LatLng(36.14513101, -86.80215537);
@@ -109,8 +109,10 @@ public class MainActivity extends LogActivity {
 	 * UI handeler
 	 */
 	private static Handler handler;
+	// current displayed location
 	private LocationReview curDisplayLoc = new LocationReview();
 
+	// handler in UI
 	private class MyHandler extends Handler {
 		private GoogleMap map;
 		private final static String TAG = "MyHandler";
@@ -200,6 +202,9 @@ public class MainActivity extends LogActivity {
 		}
 	};
 
+	/**
+	 * Override method for onCreate
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -239,8 +244,12 @@ public class MainActivity extends LogActivity {
 
 			}
 		});
+
 	}
 
+	/**
+	 * Override method for onSaveInstanceState will save current location
+	 */
 	@Override
 	protected void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
@@ -248,6 +257,9 @@ public class MainActivity extends LogActivity {
 		savedInstanceState.putDouble(LASTLON, CURRENTGRO.longitude);
 	}
 
+	/**
+	 * Override method for onStart, subscribe channel if isSub
+	 */
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -255,6 +267,25 @@ public class MainActivity extends LogActivity {
 			runSubscribe();
 	}
 
+	/**
+	 * Override method for onStop to remove GPSlisterner
+	 */
+	@Override
+	public void onStop() {
+		super.onStop();
+		removeGPSLis();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	/**
+	 * refresh map and set the market to the current location or last search
+	 */
 	public void reFreshMap() {
 		if (isGpsAvail() && !isListenGPS) {
 			locationManager.requestLocationUpdates(
@@ -267,19 +298,6 @@ public class MainActivity extends LogActivity {
 			// setMap(CURRENTGRO);
 			setMap(new LatLng(curDisplayLoc.getLat(), curDisplayLoc.getLon()));
 		}
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		removeGPSLis();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 	}
 
 	/**
@@ -376,40 +394,50 @@ public class MainActivity extends LogActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
+		case R.id.showNearby:
+			Toast.makeText(this, "show nearby crimes", Toast.LENGTH_LONG)
+					.show();
+			showNearby();
+			return true;
 		case R.id.historyAnalysis:
 			showHistory();
 			return true;
-		case R.id.showNearby:
-			showNearby();
-			return true;
 		case R.id.webOption:
+			Toast.makeText(this, "show web view", Toast.LENGTH_LONG).show();
 			showWebView();
 			return true;
 		case R.id.backToCur:
+			Toast.makeText(this, "back to the current location",
+					Toast.LENGTH_LONG).show();
 			back();
 			return true;
 		case R.id.pubOption:
+			Toast.makeText(this, "send warning", Toast.LENGTH_LONG).show();
 			showDialog();
 			return true;
 		case R.id.subOption:
+			Toast.makeText(this, "subscribe channel", Toast.LENGTH_LONG).show();
 			runSubscribe();
 			isSub = true;
 			return true;
 		case R.id.unsubOption:
+			Toast.makeText(this, "unsubscribe channel", Toast.LENGTH_LONG)
+					.show();
 			runUnSubscribe();
 			isSub = false;
 			return true;
-
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	public void showHistory(){
-		Intent intent = new Intent(MainActivity.this, HistoryAnalysisActivity.class);
+
+	public void showHistory() {
+		Intent intent = new Intent(MainActivity.this,
+				HistoryAnalysisActivity.class);
 		intent.putExtra(Util.ID, Util.getZoneFromGEO(CURRENTGRO));
 		startActivity(intent);
 	}
+
 	/**
 	 * runSubscribe will subscribe our channel via subnub when use choose
 	 * subOption in Menu. It will let the handler to handle the received message
@@ -447,7 +475,7 @@ public class MainActivity extends LogActivity {
 	}
 
 	/**
-	 * show send warning dialog
+	 * show dialog
 	 */
 	public void showDialog() {
 		// custom dialog
@@ -462,6 +490,8 @@ public class MainActivity extends LogActivity {
 			public void onClick(View v) {
 				publish(warning.getText().toString() + "@"
 						+ CURRENTGRO.latitude + "," + CURRENTGRO.longitude);
+
+				dialog.dismiss();
 			}
 		});
 
@@ -482,8 +512,12 @@ public class MainActivity extends LogActivity {
 	public void showWebView() {
 		Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
 		startActivity(intent);
+		Log.d(TAG, "showWebView");
 	}
 
+	/**
+	 * show nearby crimes
+	 */
 	public void showNearby() {
 		// start crimeservice
 		// show recent crime nearby
@@ -491,6 +525,9 @@ public class MainActivity extends LogActivity {
 				new LatLng(curDisplayLoc.getLat(), curDisplayLoc.getLon()));
 	}
 
+	/**
+	 * back to the current location in gmap
+	 */
 	public void back() {
 		setMap(CURRENTGRO);
 	}
