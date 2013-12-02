@@ -33,25 +33,6 @@ public class MainActivityTest extends
 	}
 
 	/**
-	 * test menu items
-	 */
-	public void testMenuItems() {
-		int[] menuItems = { edu.vanderbilt.cs278.safespot.R.id.showNearby,
-				edu.vanderbilt.cs278.safespot.R.id.webOption,
-				edu.vanderbilt.cs278.safespot.R.id.historyAnalysis,
-				edu.vanderbilt.cs278.safespot.R.id.backToCur,
-				edu.vanderbilt.cs278.safespot.R.id.pubOption,
-				edu.vanderbilt.cs278.safespot.R.id.subOption,
-				edu.vanderbilt.cs278.safespot.R.id.unsubOption };
-		for (int menuId : menuItems) {
-			getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_MENU);
-			assertTrue("click menu item shoud be true", getInstrumentation()
-					.invokeMenuActionSync(activity, menuId, 0));
-			this.sendKeys(KeyEvent.KEYCODE_BACK);
-		}
-	}
-
-	/**
 	 * test menu item - webOption onclick
 	 */
 	public void testWebOptionOnClick() {
@@ -85,7 +66,7 @@ public class MainActivityTest extends
 	/**
 	 * test search button
 	 */
-	public void testSearchButton() {
+	public void testButton() {
 		int buttonId = edu.vanderbilt.cs278.safespot.R.id.button;
 		assertNotNull(activity.findViewById(buttonId));
 		Button search = (Button) activity.findViewById(buttonId);
@@ -97,20 +78,10 @@ public class MainActivityTest extends
 	 */
 	public void testEditText() {
 		int addText = edu.vanderbilt.cs278.safespot.R.id.address;
-		EditText editAddr = (EditText) activity.findViewById(addText);
+		final EditText editAddr = (EditText) activity.findViewById(addText);
 		assertNotNull("EditText not allowed to be null", editAddr);
 		assertEquals("default address is vanderbilt university",
 				"vanderbilt university", editAddr.getText().toString());
-	}
-
-	/**
-	 * Test set editText
-	 * 
-	 * @throws Exception
-	 */
-	public void testSetText() throws Exception {
-		int addText = edu.vanderbilt.cs278.safespot.R.id.address;
-		final EditText editAddr = (EditText) activity.findViewById(addText);
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override

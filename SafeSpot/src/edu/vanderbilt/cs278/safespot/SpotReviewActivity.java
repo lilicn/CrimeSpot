@@ -36,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class SpotReviewActivity extends Activity {
 	private static final String TAG = "SpotReviewActivity";
-	private LocationReview currentLoc = null;
+	private LocationReview currentLoc = new LocationReview();
 	private GoogleMap map;
 	private RatingBar ratingBar;
 	private ArrayAdapter<String> listAdapter;
@@ -110,8 +110,10 @@ public class SpotReviewActivity extends Activity {
 		text = (EditText) findViewById(R.id.ratingBar2);
 
 		Bundle bundle = getIntent().getExtras();
-
-		currentLoc = (LocationReview) bundle.getSerializable("locationReview");
+		if(bundle!=null){
+			currentLoc = (LocationReview) bundle.getSerializable("locationReview");
+		}
+		
 		initializeMap();
 		handler = new MyHandler(Util.getZoneFromGEO(new LatLng(currentLoc
 				.getLat(), currentLoc.getLon())), reviewLists);

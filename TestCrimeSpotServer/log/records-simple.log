@@ -1,0 +1,25 @@
+
+check:
+
+deleteBuild:
+
+libJar:
+      [zip] Building zip: C:\Users\Li\workspace_4.3\TestCrimeSpotServer\lib.jar
+
+createBuild:
+    [javac] Compiling 2 source files to C:\Users\Li\workspace_4.3\TestCrimeSpotServer\build
+    [javac] Note: C:\Users\Li\workspace_4.3\TestCrimeSpotServer\src\edu\vanderbilt\cs278\crimespot\server\test\PostTest.java uses or overrides a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+
+PostTest:
+    [junit] Running edu.vanderbilt.cs278.crimespot.server.test.PostTest
+    [junit] {"3":"test review 001","2":"test review 001","10":"test review 001","1":"test review 001","7":"test review 001","6":"test review 001","5":"test review 001","4":"test review 001","9":"test review 001","8":"test review 001","zone":2}
+    [junit] 
+    [junit] success
+    [junit] 
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 2.36 sec
+
+main:
+BUILD SUCCESSFUL
+
+BUILD SUCCESSFUL
