@@ -67,7 +67,8 @@ public class PostTest {
 	public void sendReviewTest() {
 		nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
 				Util.SEND_REVIEW + ""));
-		nameValuePairs.add(new BasicNameValuePair(Util.REVIEW, Util.TESTREVIEW ));
+		nameValuePairs
+				.add(new BasicNameValuePair(Util.REVIEW, Util.TESTREVIEW));
 		try {
 			post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpClient client = new DefaultHttpClient();
@@ -101,6 +102,9 @@ public class PostTest {
 
 	@Test
 	public void getListTest() throws InterruptedException {
+		// send review
+		sendReviewTest();
+		before();
 		nameValuePairs.add(new BasicNameValuePair(Util.REQUEST_TYPE,
 				Util.GET_LIST + ""));
 		try {
@@ -115,12 +119,10 @@ public class PostTest {
 			for (int i = 1; i <= 10; i++) {
 				assertNotNull(obj.getString(i + "") != null);
 			}
-			// send review
-			before();
-			sendReviewTest();
+
 			// check latest review
-			assertTrue(obj.getString("10").toString(), obj.getString("10")
-					.toString().startsWith(Util.TESTREVIEW ));
+			assertTrue(obj.getString("1").toString(), obj.getString("1")
+					.toString().startsWith(Util.TESTREVIEW));
 		} catch (IOException | JSONException e) {
 			e.printStackTrace();
 		}
