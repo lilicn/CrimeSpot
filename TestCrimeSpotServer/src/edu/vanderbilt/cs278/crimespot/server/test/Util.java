@@ -19,7 +19,7 @@ public class Util {
 	public final static String SCORE = "safety point";
 	public final static String REVIEW = "user review";
 	public final static String REQUEST_TYPE = "request type";
-	public final static String TESTREVIEW = "test review";
+	public final static String TESTREVIEW = "test review for server";
 	public final static String SUCCESS = "success";
 	public final static int GET_REVIEW = 10;
 	public final static int SEND_REVIEW = 20;
