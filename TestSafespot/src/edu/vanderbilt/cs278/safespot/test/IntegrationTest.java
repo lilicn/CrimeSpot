@@ -123,7 +123,7 @@ public class IntegrationTest extends
 		}
 
 		// check latest review
-		assertTrue(obj.getString("1").toString(), obj.getString("1").toString()
+		assertTrue(responseText, obj.getString("10").toString()
 				.startsWith(TESTREVIEW));
 	}
 
