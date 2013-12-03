@@ -20,5 +20,7 @@ Android client
 - Users can see the safety analysis (heapmap, crime trend, crime type, etc).
 
 ![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/heapmap.png)
+
 ![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/historyanalysis.png)
+
 ![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/crimetype.png)
