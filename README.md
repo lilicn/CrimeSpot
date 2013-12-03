@@ -2,6 +2,8 @@ CrimeSpot
 ========
 An Android app to provide users the safety information in Gmap.
 
+![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/android.png)
+
 Users stories
 --------------
 - It can locate users current location via GPS.
@@ -30,11 +32,28 @@ Users stories
 Tools / framework used
 ------------------------
 - Google App Engine Server (Receive/send request from/to Android client)
+
+![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/gae.png)
+
 - Jenkins server (Collect crime data from offical website periodically and integration test)
-- HTML5 that interacts with native code via Javascript (Android webView)
+
+![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/jenkins.png)
+
+- HTML that interacts with native code via Javascript (Android webView)
+
+![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/dhtml.png)
+
 - Android test framework
+
+![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/androidtest.png)
+
 - Pubnub
+
+![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/pubnub.png)
+
 - Selenium
+
+![Image Alt](https://github.com/skyw932/CrimeSpot/raw/dev/demo/se.png)
 
 Tests
 ------
