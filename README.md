@@ -1,35 +1,33 @@
 CrimeSpot
 ========
-Introdunction
---------------
 An Android app to provide users the safety information in Gmap.
 
-1. Users can see both the general and detail safety information of current location.
-2. Users can see the safety information of anywhere by inputting the location.
-3. Users can send warning message to users nearby (pubnub)
+Users stories
+--------------
+1. It can locate users current location via GPS.
+2. Users can search location in Gmap.
+3. Users can see both the general and detail safety information of anywhere.
+4. Users can see the recent nearby crimes in Gmap.
+5. Users can send warning message to users nearby.
+6. Users can subscribe warning channel for nearby crimes.
+7. Users can send both text review and rate star for the specific zone.
+8. Users can review others' reviews.
+9. Users can see the safety analysis (heapmap, crime trend, crime type, etc).
 
-server
+Tools / framework used
 ------------------------
-- Google App Engine
-- Used to receive request from client and send response to client
-- collect crime data from offical website periodically;
+- Google App Engine Server (Receive/send request from/to Android client)
+- Jenkins server (Collect crime data from offical website periodically and integration test)
+- HTML5 that interacts with native code via Javascript (Android webView)
+- Android test framework
+- Pubnub
+- Selenium
 
-Client
----------
-- Android App
-
-Data collection and processing
---------------------------------
-- http://www.fbi.gov/about-us/cjis/ucr/ucr-publications#Crime
-- http://www.neighborhoodscout.com/tn/nashville/crime/#data
-- http://www.ucrdatatool.gov/
-- http://www.ucrdatatool.gov/Search/Crime/Crime.cfm
-- http://www.crimemapping.com/map.aspx
-- https://www.crimereports.com/
-- http://spotcrime.com/
-- http://www.esri.com/library/whitepapers/pdfs/gis-for-real-time-crime-centers.pdf
-- selenium
-- ...
+Tests
+------
+- Junit test
+- Integration test
+- Automation test
 
 Pivotaltracker
 ------------------
