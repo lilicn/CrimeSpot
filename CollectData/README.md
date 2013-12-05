@@ -1,15 +1,6 @@
-CollectData run in Jenkins server
-===================================
+CollectData
+--------
 
-Main fuction
----------
-- InitMain to get history data and store in data directory
-- GeoCode to get geocode for files in data directory and store it in data
-- UpdateMain to get yesterday's data and append into data directory
-
-Test
------
-Junit test
----------
-- DataStore.java
-- GeoCode.java
+InitMain to get history data and store in data directory
+UpdateMain to get yesterday's data and append into data directory
+GeoCode to get geocode for files in data directory and store it in data

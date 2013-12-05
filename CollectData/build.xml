@@ -40,13 +40,26 @@
 	</target>
 
 	<!-- collect yesterday's data -->
-	<target name="collectData" depends="createBuild">
+	<target name="collectDataMain" depends="createBuild">
 		<java fork="true"
 			classname="edu.vanderbilt.cs278.crimespot.collectdata.UpdateMain"
 			classpath="${build}:lib.jar">
 		</java>
 	</target>
-	
+
+	<!-- Junit test for collectData -->
+	<target name="collectData" depends="collectDataMain">
+		<junit printsummary="yes" fork="yes" haltonfailure="no"
+			showoutput="yes" enableTestListenerEvents="yes">
+			<test name="edu.vanderbilt.cs278.crimespot.collectdata.test.testDataStore" />
+			<test name="edu.vanderbilt.cs278.crimespot.collectdata.test.testGeoCode" />
+			<classpath>
+				<pathelement location="${build}" />
+				<pathelement path="${build}:lib.jar" />
+			</classpath>
+		</junit>
+	</target>
+
 	<target name="main" depends="collectData" />
 
 </project>

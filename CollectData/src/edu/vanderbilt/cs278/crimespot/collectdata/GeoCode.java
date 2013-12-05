@@ -35,6 +35,7 @@ public class GeoCode {
 			return geoHM.get(addr);
 		}
 		String url = getURL(START, addr, END);
+		
 		InputStream is = new URL(url).openStream();
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is,
@@ -50,6 +51,7 @@ public class GeoCode {
 				String geo = location.getString("lat") + ","
 						+ location.getString("lng");
 				geoHM.put(addr, geo);
+				System.out.println(geo.toString());
 				return geo;
 			}
 //			else{
@@ -106,39 +108,44 @@ public class GeoCode {
 		return start + addr + end;
 	}
 
-	public void changeGEO() throws JSONException, InterruptedException {
-		File folder = new File(PATH);
+	//++++++++++++++++++++
+	public void changeGEO(String filePath) throws JSONException, InterruptedException {
+		File folder = new File(filePath);
 		File[] files = folder.listFiles();
 		for (File file : files) {
 			geoHM = new HashMap<String, String>();
 			String oldName = file.getName();
-			String name = oldName + "_GEO";
-			System.out.println("start change geo for " + oldName);
-			try {
-				PrintWriter pw = DataStore.getPWByName(name);
-				BufferedReader br = new BufferedReader(new FileReader(
-						file.getAbsolutePath()));
-				String line;
-				while ((line = br.readLine()) != null) {
-					Thread.sleep(1000);
-					String[] strs = line.split(",");
-					String geo = getGeoByAddr(strs[2]);
-					System.out.println("get geo: " + geo);
-					pw.println(strs[0] + "," + strs[1] + "," + geo + "," +strs[2]);
+			
+			if(!oldName.contains(".DS_Store") )
+			{
+				String name = oldName + "_GEO";
+				System.out.println("start change geo for " + oldName);
+				try {
+					PrintWriter pw = DataStore.getPWByName(name);
+					BufferedReader br = new BufferedReader(new FileReader(
+							file.getAbsolutePath()));
+					String line;
+					while ((line = br.readLine()) != null) {
+						Thread.sleep(1000);
+						String[] strs = line.split(",");
+						String geo = getGeoByAddr(strs[2]);
+						System.out.println("get geo: " + geo);
+						pw.println(strs[0] + "," + strs[1] + "," + geo + "," +strs[2]);
+					}
+					pw.close();
+					br.close();
+	
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				pw.close();
-				br.close();
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}
 
 	public static void main(String[] args) throws MalformedURLException,
 			IOException, JSONException, InterruptedException {
-		new GeoCode().changeGEO();
+		new GeoCode().changeGEO(PATH);
 //		System.out.println(new GeoCode().getGeoByAddr("800_BLOCK_2ND_AVE_S_Nashville_TN_USA"));
 	}
 
