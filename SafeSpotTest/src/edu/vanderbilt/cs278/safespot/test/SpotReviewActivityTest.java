@@ -1,5 +1,6 @@
 package edu.vanderbilt.cs278.safespot.test;
 
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityUnitTestCase;
 import android.widget.Button;
@@ -12,11 +13,14 @@ import edu.vanderbilt.cs278.safespot.Util;
 public class SpotReviewActivityTest extends ActivityUnitTestCase<SpotReviewActivity> {
 	private int btnId_Rate;
 	private int btnId_Send;
-	private int btnId_Map;
+	//private int btnId_Map;
 	private int btnId_Star;
 	private int btnId_EditTxt;
 	private int list_Comment;
 	private SpotReviewActivity activity;
+	private Instrumentation mInstrumentation;
+	
+	
 	public SpotReviewActivityTest() {
 		super(SpotReviewActivity.class);
 	}
@@ -24,7 +28,8 @@ public class SpotReviewActivityTest extends ActivityUnitTestCase<SpotReviewActiv
 	@Override
 	  protected void setUp() throws Exception {
 	    super.setUp();
-	    Intent intent = new Intent(getInstrumentation().getTargetContext(),
+	    mInstrumentation = getInstrumentation();
+	    Intent intent = new Intent(mInstrumentation.getTargetContext(),
 	    		SpotReviewActivity.class);
 	    startActivity(intent, null, null);       
 	    activity = getActivity();
@@ -33,7 +38,7 @@ public class SpotReviewActivityTest extends ActivityUnitTestCase<SpotReviewActiv
 	public void testLayout() {
 		btnId_Rate = edu.vanderbilt.cs278.safespot.R.id.btn_submit;
 		btnId_Send = edu.vanderbilt.cs278.safespot.R.id.comment_submit;
-		btnId_Map = edu.vanderbilt.cs278.safespot.R.id.map;
+		//btnId_Map = edu.vanderbilt.cs278.safespot.R.id.map;
 		btnId_Star = edu.vanderbilt.cs278.safespot.R.id.ratingBar1;
 		btnId_EditTxt = edu.vanderbilt.cs278.safespot.R.id.ratingBar2;
 		list_Comment = edu.vanderbilt.cs278.safespot.R.id.ListView1;	
@@ -46,7 +51,7 @@ public class SpotReviewActivityTest extends ActivityUnitTestCase<SpotReviewActiv
 	    Button btn_send = (Button) activity.findViewById(btnId_Send);
 	    assertEquals("Incorrect label of the button", "Send", btn_send.getText());
 	    
-	    assertNotNull(activity.findViewById(btnId_Map));
+	    //assertNotNull(activity.findViewById(btnId_Map));
 	    
 	    assertNotNull(activity.findViewById(btnId_Star));
 	    RatingBar ratingbar= (RatingBar) activity.findViewById(btnId_Star);
@@ -83,12 +88,20 @@ public class SpotReviewActivityTest extends ActivityUnitTestCase<SpotReviewActiv
 	    		Util.SEND_STAR, msgType_rate);
 	    
 	    assertNotNull(activity.findViewById(btnId_EditTxt));
-	    EditText edit_comment= (EditText) activity.findViewById(btnId_EditTxt);
+	    final EditText edit_comment= (EditText) activity.findViewById(btnId_EditTxt);
 	    if(edit_comment.getText().toString()== ""){
 		    Intent triggeredIntent_send = getStartedActivityIntent();
 		    assertNotNull("Intent was null", triggeredIntent_send);
 	    }
-	    edit_comment.setText("test");
+	    
+	    activity.runOnUiThread(new Runnable() {
+	          public void run() {
+	        	  edit_comment.setText("test");
+	          }
+	      });
+	    
+	    mInstrumentation.waitForIdleSync();
+	    
 	    Intent triggeredIntent_send = getStartedActivityIntent();
 	    assertNotNull("Intent was null", triggeredIntent_rate);
 	    String msgType_send = triggeredIntent_send.getExtras().getString(Util.REQUEST_TYPE);
