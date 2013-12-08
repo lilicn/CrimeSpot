@@ -1,0 +1,143 @@
+
+check:
+
+deleteBuild:
+
+libJar:
+      [zip] Building zip: /Users/obo/Documents/workspace-java/CollectData/lib.jar
+
+createBuild:
+    [javac] Compiling 8 source files to /Users/obo/Documents/workspace-java/CollectData/build
+
+collectDataMain:
+     [java] http://www.crimemapping.com/DetailedReport.aspx?db=12/02/2013+00:00:00&de=12/02/2013+23:59:00&ccs=AR,AS,BU,DP,DR,DU,FR,HO,VT,RO,SX,TH,VA,VB,WE&xmin=-9667325.480312608&ymin=4321245.467651127&xmax=-9654273.857732933&ymax=4325697.924548732
+     [java] Dec 03, 2013 6:35:28 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler error
+     [java] ??: CSS error: 'http://www.crimemapping.com/css/reset.css' [4:1] Error in style rule. (Invalid token "html". Was expecting one of: <S>, <LBRACE>, <COMMA>.)
+     [java] Dec 03, 2013 6:35:28 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler warning
+     [java] ??: CSS warning: 'http://www.crimemapping.com/css/reset.css' [4:1] Ignoring the following declarations in this rule.
+     [java] Dec 03, 2013 6:35:29 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler error
+     [java] ??: CSS error: 'http://www.crimemapping.com/css/detailed-report-101011.css' [3:1] Error in style rule. (Invalid token "body". Was expecting one of: <S>, <LBRACE>, <COMMA>.)
+     [java] Dec 03, 2013 6:35:29 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler warning
+     [java] ??: CSS warning: 'http://www.crimemapping.com/css/detailed-report-101011.css' [3:1] Ignoring the following declarations in this rule.
+     [java] 36.176175,-86.797634
+     [java] DISTURBING THE PEACE,12/2/2013 12:00 AM,36.176175,-86.797634,1000_BLOCK_CHEATHAM_PL_Nashville_TN_USA
+     [java] 36.1556349,-86.7897155
+     [java] DUI,12/2/2013 12:00 AM,36.1556349,-86.7897155,14TH_AVE_S_AND_BROADWAY_Nashville_TN_USA
+     [java] 36.167618,-86.7791405
+     [java] DUI,12/2/2013 12:00 AM,36.167618,-86.7791405,200_BLOCK_JAMES_ROBERTSON_PKWY_Nashville_TN_USA
+     [java] 36.1628591,-86.80679239999999
+     [java] ASSAULT,12/2/2013 12:50 AM,36.1628591,-86.80679239999999,2000_BLOCK_HERMAN_ST_Nashville_TN_USA
+     [java] ASSAULT,12/2/2013 12:50 AM,36.1628591,-86.80679239999999,2000_BLOCK_HERMAN_ST_Nashville_TN_USA
+     [java] 36.1640245,-86.7823002
+     [java] ASSAULT,12/2/2013 06:45 AM,36.1640245,-86.7823002,300_BLOCK_6TH_AVE_N_Nashville_TN_USA
+     [java] 36.1588499,-86.7820306
+     [java] VANDALISM,12/2/2013 07:00 AM,36.1588499,-86.7820306,100_BLOCK_8TH_AVE_S_Nashville_TN_USA
+     [java] 36.1768309,-86.81241969999999
+     [java] BURGLARY,12/2/2013 07:30 AM,36.1768309,-86.81241969999999,1700_BLOCK_22ND_AVE_N_Nashville_TN_USA
+     [java] 36.1794337,-86.7939464
+     [java] ASSAULT,12/2/2013 10:10 AM,36.1794337,-86.7939464,1600_BLOCK_7TH_AVE_N_Nashville_TN_USA
+     [java] 36.15482799999999,-86.75660099999999
+     [java] ASSAULT,12/2/2013 11:15 AM,36.15482799999999,-86.75660099999999,200_BLOCK_HERMITAGE_AVE_Nashville_TN_USA
+     [java] 36.155136,-86.83570499999999
+     [java] FRAUD,12/2/2013 11:46 AM,36.155136,-86.83570499999999,600_BLOCK_41ST_AVE_N_Nashville_TN_USA
+     [java] BURGLARY,12/2/2013 01:30 PM,not found,800_BLOCK_33RD_AVE_N_Nashville_TN_USA
+     [java] ASSAULT,12/2/2013 03:35 PM,not found,400_BLOCK_CHARLOTTE_AVE_Nashville_TN_USA
+     [java] THEFT/LARCENY,12/2/2013 04:00 PM,not found,100_BLOCK_CHARLES_E_DAVIS_BLVD_Nashville_TN_USA
+     [java] ASSAULT,12/2/2013 05:30 PM,not found,4400_BLOCK_TENNESSEE_AVE_Nashville_TN_USA
+     [java] THEFT/LARCENY,12/2/2013 08:00 PM,not found,100_BLOCK_2ND_AVE_N_Nashville_TN_USA
+     [java] ASSAULT,12/2/2013 11:00 PM,not found,1600_BLOCK_COCKRILL_ST_Nashville_TN_USA
+
+collectData:
+    [junit] Running edu.vanderbilt.cs278.crimespot.collectdata.test.testDataStore
+    [junit] http://www.crimemapping.com/DetailedReport.aspx?db=12/02/2013+00:00:00&de=12/02/2013+23:59:00&ccs=AR,AS,BU,DP,DR,DU,FR,HO,VT,RO,SX,TH,VA,VB,WE&xmin=-9667325.480312608&ymin=4321245.467651127&xmax=-9654273.857732933&ymax=4325697.924548732
+    [junit] Dec 03, 2013 6:35:32 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler error
+    [junit] ??: CSS error: 'http://www.crimemapping.com/css/reset.css' [4:1] Error in style rule. (Invalid token "html". Was expecting one of: <S>, <LBRACE>, <COMMA>.)
+    [junit] Dec 03, 2013 6:35:32 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler warning
+    [junit] ??: CSS warning: 'http://www.crimemapping.com/css/reset.css' [4:1] Ignoring the following declarations in this rule.
+    [junit] Dec 03, 2013 6:35:33 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler error
+    [junit] ??: CSS error: 'http://www.crimemapping.com/css/detailed-report-101011.css' [3:1] Error in style rule. (Invalid token "body". Was expecting one of: <S>, <LBRACE>, <COMMA>.)
+    [junit] Dec 03, 2013 6:35:33 PM com.gargoylesoftware.htmlunit.DefaultCssErrorHandler warning
+    [junit] ??: CSS warning: 'http://www.crimemapping.com/css/detailed-report-101011.css' [3:1] Ignoring the following declarations in this rule.
+    [junit] 36.176175,-86.797634
+    [junit] DISTURBING THE PEACE,12/2/2013 12:00 AM,36.176175,-86.797634,1000_BLOCK_CHEATHAM_PL_Nashville_TN_USA
+    [junit] 36.1556349,-86.7897155
+    [junit] DUI,12/2/2013 12:00 AM,36.1556349,-86.7897155,14TH_AVE_S_AND_BROADWAY_Nashville_TN_USA
+    [junit] 36.167618,-86.7791405
+    [junit] DUI,12/2/2013 12:00 AM,36.167618,-86.7791405,200_BLOCK_JAMES_ROBERTSON_PKWY_Nashville_TN_USA
+    [junit] 36.1628591,-86.80679239999999
+    [junit] ASSAULT,12/2/2013 12:50 AM,36.1628591,-86.80679239999999,2000_BLOCK_HERMAN_ST_Nashville_TN_USA
+    [junit] ASSAULT,12/2/2013 12:50 AM,36.1628591,-86.80679239999999,2000_BLOCK_HERMAN_ST_Nashville_TN_USA
+    [junit] 36.1640245,-86.7823002
+    [junit] ASSAULT,12/2/2013 06:45 AM,36.1640245,-86.7823002,300_BLOCK_6TH_AVE_N_Nashville_TN_USA
+    [junit] 36.1588499,-86.7820306
+    [junit] VANDALISM,12/2/2013 07:00 AM,36.1588499,-86.7820306,100_BLOCK_8TH_AVE_S_Nashville_TN_USA
+    [junit] 36.1768309,-86.81241969999999
+    [junit] BURGLARY,12/2/2013 07:30 AM,36.1768309,-86.81241969999999,1700_BLOCK_22ND_AVE_N_Nashville_TN_USA
+    [junit] 36.1794337,-86.7939464
+    [junit] ASSAULT,12/2/2013 10:10 AM,36.1794337,-86.7939464,1600_BLOCK_7TH_AVE_N_Nashville_TN_USA
+    [junit] 36.15482799999999,-86.75660099999999
+    [junit] ASSAULT,12/2/2013 11:15 AM,36.15482799999999,-86.75660099999999,200_BLOCK_HERMITAGE_AVE_Nashville_TN_USA
+    [junit] 36.155136,-86.83570499999999
+    [junit] FRAUD,12/2/2013 11:46 AM,36.155136,-86.83570499999999,600_BLOCK_41ST_AVE_N_Nashville_TN_USA
+    [junit] 36.1539731,-86.8241499
+    [junit] BURGLARY,12/2/2013 01:30 PM,36.1539731,-86.8241499,800_BLOCK_33RD_AVE_N_Nashville_TN_USA
+    [junit] ASSAULT,12/2/2013 03:35 PM,not found,400_BLOCK_CHARLOTTE_AVE_Nashville_TN_USA
+    [junit] THEFT/LARCENY,12/2/2013 04:00 PM,not found,100_BLOCK_CHARLES_E_DAVIS_BLVD_Nashville_TN_USA
+    [junit] ASSAULT,12/2/2013 05:30 PM,not found,4400_BLOCK_TENNESSEE_AVE_Nashville_TN_USA
+    [junit] THEFT/LARCENY,12/2/2013 08:00 PM,not found,100_BLOCK_2ND_AVE_N_Nashville_TN_USA
+    [junit] ASSAULT,12/2/2013 11:00 PM,not found,1600_BLOCK_COCKRILL_ST_Nashville_TN_USA
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 3.273 sec
+    [junit] Running edu.vanderbilt.cs278.crimespot.collectdata.test.testGeoCode
+    [junit] 36.1443747,-86.8027437
+    [junit] start change geo for Memphis_TN_USA_8
+    [junit] start change geo for Nashville_TN_USA_8
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] get geo: not found
+    [junit] start change geo for test
+    [junit] java.io.IOException: Server returned HTTP response code: 400 for URL: http://maps.googleapis.com/maps/api/geocode/json?address=not found&sensor=true
+    [junit] 	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1626)
+    [junit] 	at java.net.URL.openStream(URL.java:1037)
+    [junit] 	at edu.vanderbilt.cs278.crimespot.collectdata.GeoCode.getGeoByAddr(GeoCode.java:39)
+    [junit] 	at edu.vanderbilt.cs278.crimespot.collectdata.GeoCode.changeGEO(GeoCode.java:131)
+    [junit] 	at edu.vanderbilt.cs278.crimespot.collectdata.test.testGeoCode.testChangeGEO(testGeoCode.java:64)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+    [junit] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    [junit] 	at java.lang.reflect.Method.invoke(Method.java:606)
+    [junit] 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+    [junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+    [junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+    [junit] 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+    [junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+    [junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+    [junit] 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+    [junit] 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+    [junit] 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+    [junit] 	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+    [junit] 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+    [junit] 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+    [junit] 	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+    [junit] 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+    [junit] 	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+    [junit] 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:38)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:520)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1060)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:911)
+    [junit] 36.1443747,-86.8027437
+    [junit] get geo: 36.1443747,-86.8027437
+    [junit] any crime,any time,36.1443747,-86.8027437,VanderbiltNashville
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 14.465 sec
+
+main:
+BUILD SUCCESSFUL
+
+BUILD SUCCESSFUL

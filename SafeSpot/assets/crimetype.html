@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Type', 'Number'],
+          ['Arson',  %d],
+          ['Assault',  %d],
+          ['Burglary',  %d],
+          ['Disturbing The Peace',  %d],
+          ['Drugs/Alcohol',  %d],
+          ['DUI',  %d],
+          ['Fraud',  %d],
+          ['Homicide',  %d],
+          ['Motor Vechicle Theft',  %d],
+          ['Robbery',  %d],
+          ['Sex Crime',  %d],
+          ['Theft/Larceny',  %d],
+          ['Vandalism',  %d],
+          ['Vechicle Break in',  %d],
+          ['Weapons',  %d]
+        ]);
+		
+		data.sort([{column: 1, desc:true}, {column: 0}]);
+		
+        var options = {
+          title: 'History Crime Type',
+          vAxis: {title: 'Type',  titleTextStyle: {color: 'black'}}
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>
